@@ -13,7 +13,7 @@ It is based on proven patterns used in your production-style apps (`AppCanvas`, 
 
 - A working end-to-end vertical slice (UI → controller proxy → splunkd REST handler)
 - Defensive frontend path fallback across Splunk environments
-- Capability-gated backend behavior and conf-driven runtime settings
+- Neutral starter UI ready for domain-specific customization
 - Repeatable build/sync/package flow
 
 ## Quickstart

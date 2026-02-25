@@ -1,6 +1,6 @@
 <dashboard version="1.1" theme="dark" stylesheet="splunk_react_app.css" script="splunk_react_app.js">
   <label>Splunk React App</label>
-  <description>Starter dashboard for capability-gated endpoint checks and custom app workflows.</description>
+  <description>Blank React starter dashboard for custom Splunk app workflows.</description>
   <row>
     <panel>
       <html encoded="false">

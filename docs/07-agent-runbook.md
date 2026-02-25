@@ -13,6 +13,8 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 ## Standard execution sequence
 
 1. **Initialize workspace**
+   - Change to repository root first:
+     - `cd <repo-root-containing-package.json>`
    - Ensure dependencies are installed: `npm install`
    - Confirm current template builds before customization.
 
@@ -22,6 +24,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
    - Verify app identity is updated in Splunk app folder, view/nav names, and packaging/build scripts.
    - Run consistency gate:
      - `npm run sanity:appid -- --appId <appId> --appLabel "<appLabel>"`
+    - Note: check count may differ by one when `--appLabel` is omitted (label assertion is optional).
 
 3. **Select UI baseline**
    - Minimal first for fast route bring-up: `npm run variant:minimal`
