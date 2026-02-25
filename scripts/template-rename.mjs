@@ -1,8 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const OLD_APP_ID = 'splunk_terminal_app'
-const OLD_APP_LABEL = 'Splunk Terminal App'
+const OLD_APP_ID = 'splunk_react_app'
+const OLD_APP_LABEL = 'Splunk React App'
+const APP_LOGO_PLACEHOLDER_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO5n9xkAAAAASUVORK5CYII='
 
 function parseArgs(argv) {
   const args = {}
@@ -38,6 +39,15 @@ function replaceInFile(filePath, replacements) {
     updated = updated.split(from).join(to)
   }
   if (updated !== content) write(filePath, updated)
+}
+
+function ensureAppLogo(appDir) {
+  const staticDir = path.join(appDir, 'static')
+  const logoPath = path.join(staticDir, 'appLogo.png')
+  fs.mkdirSync(staticDir, { recursive: true })
+  if (!fs.existsSync(logoPath)) {
+    fs.writeFileSync(logoPath, Buffer.from(APP_LOGO_PLACEHOLDER_BASE64, 'base64'))
+  }
 }
 
 function main() {
@@ -87,13 +97,16 @@ function main() {
     path.join(root, 'scripts', 'splunk-sync.mjs'),
     path.join(root, 'scripts', 'splunk-package.mjs'),
     path.join(root, 'vite.splunk.config.ts'),
-    path.join(root, 'src', 'terminalClient.ts'),
+    path.join(root, 'src', 'appClient.ts'),
     path.join(root, 'src', 'splunk', 'splunkMain.tsx'),
-    path.join(activeAppDir, 'bin', 'terminal_access.py'),
-    path.join(activeAppDir, 'appserver', 'controllers', 'terminal_rest_proxy.py'),
+    path.join(activeAppDir, 'bin', 'app_access.py'),
+    path.join(activeAppDir, 'appserver', 'controllers', 'app_rest_proxy.py'),
+    path.join(activeAppDir, 'appserver', 'controllers', 'apprestproxy.py'),
     path.join(activeAppDir, 'default', 'app.conf'),
     path.join(activeAppDir, 'default', 'restmap.conf'),
     path.join(activeAppDir, 'default', 'web.conf'),
+    path.join(activeAppDir, 'default', 'authorize.conf'),
+    path.join(activeAppDir, 'default', 'app_settings.conf'),
     path.join(activeAppDir, 'default', 'data', 'ui', 'nav', 'default.xml'),
     fs.existsSync(newViewFile) ? newViewFile : oldViewFile,
   ]
@@ -106,6 +119,8 @@ function main() {
   for (const file of filesToPatch) {
     if (fs.existsSync(file)) replaceInFile(file, replacements)
   }
+
+  ensureAppLogo(activeAppDir)
 
   console.log(`Template renamed to appId='${appId}', appLabel='${appLabel}'.`)
 }

@@ -10,7 +10,7 @@ npm run package:splunk
 
 Output package:
 
-- `build/<appId>.tar.gz` (default: `build/splunk_terminal_app.tar.gz`)
+- `build/<appId>.tar.gz` (default: `build/splunk_react_app.tar.gz`)
 
 ## Install in Splunk
 
@@ -21,6 +21,6 @@ Output package:
 ## Validation commands (server-side)
 
 ```bash
-splunk cmd btool restmap list --debug | egrep "terminal_access|<appId>"
-splunk cmd btool web list --debug | egrep "terminal_rest_proxy|<appId>"
+splunk cmd btool restmap list --debug | egrep "app_access|<appId>"
+splunk cmd btool web list --debug | egrep "app_rest_proxy|apprestproxy|<appId>"
 ```

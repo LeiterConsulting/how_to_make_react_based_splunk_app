@@ -9,8 +9,8 @@
 
 Expose both controller spellings for compatibility:
 
-- `terminal_rest_proxy/*`
-- `terminalrestproxy/*`
+- `app_rest_proxy/*`
+- `apprestproxy/*`
 
 Also expose app-scoped service patterns where needed.
 

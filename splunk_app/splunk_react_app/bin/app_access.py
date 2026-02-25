@@ -6,7 +6,7 @@ from urllib.parse import parse_qs
 import splunk.rest as rest
 from splunk.persistconn.application import PersistentServerConnectionApplication
 
-APP = 'splunk_terminal_app'
+APP = 'splunk_react_app'
 DEFAULT_TIMEOUT_S = 3
 
 
@@ -113,10 +113,10 @@ def _parse_params(req):
     return params
 
 
-def _read_terminal_settings(session_key):
+def _read_app_settings(session_key):
     try:
         data = _simple_json(
-            '/servicesNS/nobody/{}/configs/conf-terminal_app/settings'.format(APP),
+            '/servicesNS/nobody/{}/configs/conf-app_settings/settings'.format(APP),
             session_key,
             method='GET',
             getargs={'output_mode': 'json'},
@@ -130,7 +130,7 @@ def _read_terminal_settings(session_key):
 def _load_known_endpoints(session_key):
     try:
         data = _simple_json(
-            '/servicesNS/nobody/{}/configs/conf-terminal_assets'.format(APP),
+            '/servicesNS/nobody/{}/configs/conf-app_assets'.format(APP),
             session_key,
             method='GET',
             getargs={'output_mode': 'json', 'count': '0'},
@@ -253,9 +253,9 @@ def _build_launch_url(template, host, port, user):
     return t.replace('{host}', host).replace('{port}', str(port)).replace('{user}', user or '')
 
 
-class TerminalAccessApp(PersistentServerConnectionApplication):
+class AppAccessApp(PersistentServerConnectionApplication):
     def __init__(self, command_line=None, command_arg=None):
-        super(TerminalAccessApp, self).__init__()
+        super(AppAccessApp, self).__init__()
 
     def handle(self, in_string):
         try:
@@ -268,8 +268,8 @@ class TerminalAccessApp(PersistentServerConnectionApplication):
             path = _normalize_path(req)
             params = _parse_params(req)
 
-            settings = _read_terminal_settings(session_key)
-            required_capability = str(settings.get('required_capability') or 'terminal_remote_access').strip() or 'terminal_remote_access'
+            settings = _read_app_settings(session_key)
+            required_capability = str(settings.get('required_capability') or 'app_remote_access').strip() or 'app_remote_access'
             timeout_s = max(1, min(15, _to_int(settings.get('probe_timeout_s'), DEFAULT_TIMEOUT_S)))
 
             user, capabilities = _get_current_context(session_key)
@@ -342,7 +342,7 @@ class TerminalAccessApp(PersistentServerConnectionApplication):
                         status=409,
                     )
 
-                launch_url = _build_launch_url(settings.get('terminal_gateway_url_template'), host, port, user)
+                launch_url = _build_launch_url(settings.get('app_launch_url_template'), host, port, user)
                 connection = {
                     'type': 'ssh',
                     'host': host,
@@ -350,9 +350,9 @@ class TerminalAccessApp(PersistentServerConnectionApplication):
                     'user': user,
                     'ssh_uri': 'ssh://{}@{}:{}'.format(user or 'user', host, port),
                     'launch': {
-                        'kind': 'web-terminal-url' if launch_url else 'external-ssh-client',
+                        'kind': 'web-app-url' if launch_url else 'external-ssh-client',
                         'url': launch_url,
-                        'note': 'Configure terminal_gateway_url_template in terminal_app.conf for in-browser launch.' if not launch_url else '',
+                        'note': 'Configure app_launch_url_template in app_settings.conf for browser launch.' if not launch_url else '',
                     },
                 }
                 return _json_response({'ok': True, 'can_connect': True, 'connection': connection, 'probe': probe})

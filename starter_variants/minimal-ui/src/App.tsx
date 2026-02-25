@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getCapability, getKnownEndpoints } from './terminalClient'
+import { getCapability, getKnownEndpoints } from './appClient'
 
 type Status = 'loading' | 'idle' | 'error'
 
@@ -9,7 +9,7 @@ export default function App() {
 
   const [user, setUser] = useState('(unknown)')
   const [hasAccess, setHasAccess] = useState(false)
-  const [requiredCapability, setRequiredCapability] = useState('terminal_remote_access')
+  const [requiredCapability, setRequiredCapability] = useState('app_remote_access')
   const [endpointCount, setEndpointCount] = useState(0)
 
   async function refresh() {
@@ -19,7 +19,7 @@ export default function App() {
       const [capability, endpoints] = await Promise.all([getCapability(), getKnownEndpoints(false)])
       setUser(capability.user || '(unknown)')
       setHasAccess(capability.has_access)
-      setRequiredCapability(capability.required_capability || 'terminal_remote_access')
+      setRequiredCapability(capability.required_capability || 'app_remote_access')
       setEndpointCount((endpoints.endpoints || []).length)
       setStatus('idle')
     } catch (e) {

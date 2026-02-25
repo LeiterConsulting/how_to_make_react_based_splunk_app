@@ -2,7 +2,7 @@
 
 - [ ] Run `npm run template:rename -- --appId <id> --appLabel "<label>"`
 - [ ] Replace `src/App.tsx` with your domain UI
-- [ ] Replace backend logic in `bin/terminal_access.py`
+- [ ] Replace backend logic in `bin/app_access.py`
 - [ ] Keep route/controller config patterns unless you have a tested alternative
 - [ ] Add capability requirements in `default/authorize.conf`
 - [ ] Add app-specific conf stanzas under `default/*.conf`

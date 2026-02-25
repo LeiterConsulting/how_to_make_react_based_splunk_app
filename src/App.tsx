@@ -7,7 +7,7 @@ import {
   type ConnectResult,
   type Endpoint,
   type EndpointProbe,
-} from './terminalClient'
+} from './appClient'
 
 type Status = 'idle' | 'loading' | 'saving' | 'error'
 
@@ -35,7 +35,7 @@ export default function App() {
   const [error, setError] = useState('')
 
   const [hasAccess, setHasAccess] = useState(false)
-  const [requiredCapability, setRequiredCapability] = useState('terminal_remote_access')
+  const [requiredCapability, setRequiredCapability] = useState('app_remote_access')
   const [user, setUser] = useState('')
   const [capabilities, setCapabilities] = useState<string[]>([])
 
@@ -164,9 +164,9 @@ export default function App() {
   return (
     <div style={{ maxWidth: 1160, margin: '0 auto', padding: 20 }}>
       <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16, padding: 16 }}>
-        <div style={{ fontSize: 20, fontWeight: 700 }}>Splunk Terminal App</div>
+        <div style={{ fontSize: 20, fontWeight: 700 }}>Splunk React Starter</div>
         <div style={{ marginTop: 6, color: '#94a3b8', fontSize: 13 }}>
-          Probes known endpoints for SSH/remote-terminal capability and allows direct connect only when the current user has the required Splunk capability.
+          Probes configured endpoints and validates capability-gated access flows for rapid app prototyping.
         </div>
 
         <div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 10 }}>
@@ -248,7 +248,7 @@ export default function App() {
             })}
           </div>
         ) : (
-          <div style={{ marginTop: 8, color: '#94a3b8', fontSize: 13 }}>No enabled endpoints found in <code>terminal_assets.conf</code>.</div>
+          <div style={{ marginTop: 8, color: '#94a3b8', fontSize: 13 }}>No enabled endpoints found in <code>app_assets.conf</code>.</div>
         )}
       </div>
 

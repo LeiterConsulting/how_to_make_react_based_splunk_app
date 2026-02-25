@@ -4,7 +4,7 @@ import path from 'node:path'
 
 const projectRoot = path.resolve(process.cwd())
 const buildDir = path.join(projectRoot, 'build')
-const appFolderName = 'splunk_terminal_app'
+const appFolderName = 'splunk_react_app'
 const splunkAppRoot = path.join(projectRoot, 'splunk_app', appFolderName)
 
 fs.mkdirSync(buildDir, { recursive: true })

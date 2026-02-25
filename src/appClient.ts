@@ -1,6 +1,6 @@
 import { getSplunkCustomControllerBasePath, getSplunkServicesBasePath, getSplunkServicesNSBasePath, splunkFetchJSON } from './llmProxySdk/splunkFetch'
 
-const APP = 'splunk_terminal_app'
+const APP = 'splunk_react_app'
 
 type Endpoint = {
   id: string
@@ -60,25 +60,25 @@ type ConnectResult = {
   }
 }
 
-function terminalPath(path = '') {
-  return `${getSplunkServicesNSBasePath(APP)}/terminal${path}`
+function appApiPath(path = '') {
+  return `${getSplunkServicesNSBasePath(APP)}/app_api${path}`
 }
 
-function terminalPathAppPrefixed(path = '') {
-  return `${getSplunkServicesNSBasePath(APP)}/${APP}/terminal${path}`
+function appApiPathAppPrefixed(path = '') {
+  return `${getSplunkServicesNSBasePath(APP)}/${APP}/app_api${path}`
 }
 
-function terminalPathServices(path = '') {
-  return `${getSplunkServicesBasePath()}/terminal${path}`
+function appApiPathServices(path = '') {
+  return `${getSplunkServicesBasePath()}/app_api${path}`
 }
 
-function terminalPathServicesAppPrefixed(path = '') {
-  return `${getSplunkServicesBasePath()}/${APP}/terminal${path}`
+function appApiPathServicesAppPrefixed(path = '') {
+  return `${getSplunkServicesBasePath()}/${APP}/app_api${path}`
 }
 
-function terminalPathCustomController(path = '') {
-  const base = getSplunkCustomControllerBasePath(APP, 'terminal_rest_proxy')
-  return `${base}/services/${APP}/terminal${path}`
+function appApiPathCustomController(path = '') {
+  const base = getSplunkCustomControllerBasePath(APP, 'app_rest_proxy')
+  return `${base}/services/${APP}/app_api${path}`
 }
 
 function isNotFoundError(error: unknown): boolean {
@@ -89,11 +89,11 @@ function isNotFoundError(error: unknown): boolean {
 
 async function fetchWithPathFallback<T>(pathSuffix: string, options: { method?: 'GET' | 'POST'; query?: Record<string, string>; form?: Record<string, string> } = {}) {
   const candidates = [
-    terminalPathCustomController(pathSuffix),
-    terminalPath(pathSuffix),
-    terminalPathAppPrefixed(pathSuffix),
-    terminalPathServices(pathSuffix),
-    terminalPathServicesAppPrefixed(pathSuffix),
+    appApiPathCustomController(pathSuffix),
+    appApiPath(pathSuffix),
+    appApiPathAppPrefixed(pathSuffix),
+    appApiPathServices(pathSuffix),
+    appApiPathServicesAppPrefixed(pathSuffix),
   ]
 
   let lastError: unknown = null
@@ -118,7 +118,7 @@ async function fetchWithPathFallback<T>(pathSuffix: string, options: { method?: 
     throw new Error(`${lastError.message}\nAttempted paths:\n${attemptedText}`)
   }
 
-  throw new Error(`All terminal endpoint path candidates failed\nAttempted paths:\n${attemptedText}`)
+  throw new Error(`All app endpoint path candidates failed\nAttempted paths:\n${attemptedText}`)
 }
 
 export async function getCapability(): Promise<CapabilityResult> {

@@ -10,12 +10,12 @@ This starter uses a 3-layer architecture:
 
 Primary UI path (recommended):
 
-- `/en-US/custom/<appId>/terminal_rest_proxy/services/<appId>/terminal/<endpoint>`
+- `/en-US/custom/<appId>/app_rest_proxy/services/<appId>/app_api/<endpoint>`
 
 Fallback paths (kept for portability):
 
-- `/en-US/splunkd/__raw/servicesNS/nobody/<appId>/terminal/<endpoint>`
-- `/en-US/splunkd/__raw/services/<appId>/terminal/<endpoint>`
+- `/en-US/splunkd/__raw/servicesNS/nobody/<appId>/app_api/<endpoint>`
+- `/en-US/splunkd/__raw/services/<appId>/app_api/<endpoint>`
 
 ## Why this pattern
 

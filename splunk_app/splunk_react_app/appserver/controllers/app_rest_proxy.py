@@ -23,7 +23,7 @@ try:
 except Exception:
   from urlparse import parse_qs
 
-APP = 'splunk_terminal_app'
+APP = 'splunk_react_app'
 
 
 def _json_response(payload, status=200):
@@ -115,7 +115,7 @@ def _proxy_simple_request(path, session_key, method, params):
   return content.decode('utf-8', errors='replace') if isinstance(content, (bytes, bytearray)) else (content or '')
 
 
-class TerminalRestProxyController(BaseController):
+class AppRestProxyController(BaseController):
   @expose_page(must_login=True)
   def ping(self, **_kwargs):
     sk = _get_session_key()
@@ -141,5 +141,5 @@ class TerminalRestProxyController(BaseController):
     return _proxy_simple_request(target, sk, method, params)
 
 
-class Terminal_rest_proxyController(TerminalRestProxyController):
+class App_rest_proxyController(AppRestProxyController):
   pass
