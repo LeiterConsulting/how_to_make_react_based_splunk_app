@@ -41,6 +41,36 @@ function replaceInFile(filePath, replacements) {
   if (updated !== content) write(filePath, updated)
 }
 
+function setAppConfLabel(filePath, appLabel) {
+  if (!fs.existsSync(filePath)) return
+  const content = read(filePath)
+  const updated = content.replace(/^(\s*label\s*=\s*).+$/m, `$1${appLabel}`)
+  if (updated !== content) write(filePath, updated)
+}
+
+function setViewLabel(filePath, appLabel) {
+  if (!fs.existsSync(filePath)) return
+  const content = read(filePath)
+  const updated = content.replace(/(<label>)([^<]*)(<\/label>)/, `$1${appLabel}$3`)
+  if (updated !== content) write(filePath, updated)
+}
+
+function listAppFolders(splunkAppRoot) {
+  if (!fs.existsSync(splunkAppRoot)) return []
+  return fs
+    .readdirSync(splunkAppRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
+    .map((entry) => entry.name)
+}
+
+function readAppLabel(appDir) {
+  const appConf = path.join(appDir, 'default', 'app.conf')
+  if (!fs.existsSync(appConf)) return OLD_APP_LABEL
+  const content = read(appConf)
+  const match = content.match(/^\s*label\s*=\s*(.+)$/m)
+  return match ? match[1].trim() : OLD_APP_LABEL
+}
+
 function ensureAppLogo(appDir) {
   const staticDir = path.join(appDir, 'static')
   const logoPath = path.join(staticDir, 'appLogo.png')
@@ -53,39 +83,63 @@ function ensureAppLogo(appDir) {
 function main() {
   const args = parseArgs(process.argv.slice(2))
   const appId = (args.appId || '').trim()
-  const appLabel = (args.appLabel || '').trim() || OLD_APP_LABEL
+  const sourceAppIdArg = (args.sourceAppId || '').trim()
 
   if (!appId) {
     throw new Error('Missing required argument --appId')
   }
   ensureAppId(appId)
 
-  if (appId === OLD_APP_ID && appLabel === OLD_APP_LABEL) {
+  const root = process.cwd()
+  const splunkAppRoot = path.join(root, 'splunk_app')
+  const appFolders = listAppFolders(splunkAppRoot)
+
+  let sourceAppId = sourceAppIdArg
+  if (!sourceAppId) {
+    if (appFolders.includes(OLD_APP_ID)) {
+      sourceAppId = OLD_APP_ID
+    } else if (appFolders.includes(appId)) {
+      sourceAppId = appId
+    } else if (appFolders.length === 1) {
+      ;[sourceAppId] = appFolders
+    }
+  }
+
+  if (!sourceAppId) {
+    throw new Error(
+      `Could not determine source app folder under splunk_app/. Found: ${appFolders.join(', ') || '(none)'}\n` +
+        `Pass --sourceAppId <id> explicitly.`,
+    )
+  }
+
+  const sourceAppDir = path.join(splunkAppRoot, sourceAppId)
+  if (!fs.existsSync(sourceAppDir)) {
+    throw new Error(`Could not find source app folder: ${sourceAppDir}`)
+  }
+
+  const sourceAppLabel = readAppLabel(sourceAppDir)
+  const appLabel = (args.appLabel || '').trim() || sourceAppLabel
+
+  if (appId === sourceAppId && appLabel === sourceAppLabel) {
     console.log('No changes needed.')
     return
   }
 
-  const root = process.cwd()
-  const oldAppDir = path.join(root, 'splunk_app', OLD_APP_ID)
   const newAppDir = path.join(root, 'splunk_app', appId)
 
-  if (!fs.existsSync(oldAppDir) && !fs.existsSync(newAppDir)) {
-    throw new Error('Could not find source app folder under splunk_app/.')
-  }
-
-  if (fs.existsSync(oldAppDir) && appId !== OLD_APP_ID) {
+  if (appId !== sourceAppId) {
     if (fs.existsSync(newAppDir)) {
       throw new Error(`Target app folder already exists: ${newAppDir}`)
     }
-    fs.renameSync(oldAppDir, newAppDir)
+    fs.renameSync(sourceAppDir, newAppDir)
   }
 
-  const activeAppDir = fs.existsSync(newAppDir) ? newAppDir : oldAppDir
+  const activeAppDir = appId === sourceAppId ? sourceAppDir : newAppDir
 
-  const oldViewFile = path.join(activeAppDir, 'default', 'data', 'ui', 'views', `${OLD_APP_ID}.xml`)
+  const oldViewFile = path.join(activeAppDir, 'default', 'data', 'ui', 'views', `${sourceAppId}.xml`)
   const newViewFile = path.join(activeAppDir, 'default', 'data', 'ui', 'views', `${appId}.xml`)
 
-  if (fs.existsSync(oldViewFile) && appId !== OLD_APP_ID) {
+  if (fs.existsSync(oldViewFile) && appId !== sourceAppId) {
     if (fs.existsSync(newViewFile)) {
       throw new Error(`Target view file already exists: ${newViewFile}`)
     }
@@ -111,14 +165,14 @@ function main() {
     fs.existsSync(newViewFile) ? newViewFile : oldViewFile,
   ]
 
-  const replacements = [
-    [OLD_APP_ID, appId],
-    [OLD_APP_LABEL, appLabel],
-  ]
+  const replacements = [[sourceAppId, appId]]
 
   for (const file of filesToPatch) {
     if (fs.existsSync(file)) replaceInFile(file, replacements)
   }
+
+  setAppConfLabel(path.join(activeAppDir, 'default', 'app.conf'), appLabel)
+  setViewLabel(fs.existsSync(newViewFile) ? newViewFile : oldViewFile, appLabel)
 
   ensureAppLogo(activeAppDir)
 

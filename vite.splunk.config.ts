@@ -14,7 +14,7 @@ export default defineConfig({
     cssCodeSplit: false,
     lib: {
       entry: 'src/splunk/splunkMain.tsx',
-      name: 'SplunkTerminalApp',
+      name: 'SplunkReactApp',
       formats: ['iife'],
       fileName: () => 'splunk_react_app',
     },

@@ -6,7 +6,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 
 - `appId` (lowercase, underscore-safe; example: `threat_ops_console`)
 - `appLabel` (launcher/display name)
-- target backend capability requirement(s)
+- target backend capability requirement(s), if needed
 - core endpoint set needed by UI
 - preferred UI variant (`minimal` or `rich`)
 
@@ -32,7 +32,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 
 4. **Implement backend domain logic**
    - Replace logic in persistent REST handler under `splunk_app/<appId>/bin/*.py`.
-   - Keep centralized capability checks and structured JSON error payloads.
+   - Keep structured JSON error payloads and enable capability checks only when required by app domain.
    - Preserve session/auth extraction robustness.
 
 5. **Validate routing and exposure contracts**

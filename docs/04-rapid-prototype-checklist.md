@@ -4,7 +4,7 @@
 - [ ] Replace `src/App.tsx` with your domain UI
 - [ ] Replace backend logic in `bin/app_access.py`
 - [ ] Keep route/controller config patterns unless you have a tested alternative
-- [ ] Add capability requirements in `default/authorize.conf`
+- [ ] Add capability requirements in `default/authorize.conf` only if your domain requires RBAC gating
 - [ ] Add app-specific conf stanzas under `default/*.conf`
 - [ ] Build and package
 - [ ] Install tarball and restart Splunk

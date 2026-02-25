@@ -13,7 +13,7 @@ Verify that an agent can use this bootstrap to produce a bespoke app package wit
 - `appId`:
 - `appLabel`:
 - domain summary (2-4 lines):
-- required backend capability name:
+- required backend capability name (optional):
 - core endpoints to implement:
 - UI variant (`minimal` or `rich`):
 

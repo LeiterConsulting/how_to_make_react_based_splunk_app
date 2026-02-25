@@ -269,11 +269,11 @@ class AppAccessApp(PersistentServerConnectionApplication):
             params = _parse_params(req)
 
             settings = _read_app_settings(session_key)
-            required_capability = str(settings.get('required_capability') or 'app_remote_access').strip() or 'app_remote_access'
+            required_capability = str(settings.get('required_capability') or '').strip()
             timeout_s = max(1, min(15, _to_int(settings.get('probe_timeout_s'), DEFAULT_TIMEOUT_S)))
 
             user, capabilities = _get_current_context(session_key)
-            has_access = required_capability in capabilities
+            has_access = True if not required_capability else required_capability in capabilities
 
             if path.endswith('/ping'):
                 return _json_response({'ok': True, 'path': path, 'method': method})
@@ -311,7 +311,7 @@ class AppAccessApp(PersistentServerConnectionApplication):
                 return _json_response(probe)
 
             if path.endswith('/connect'):
-                if not has_access:
+                if required_capability and not has_access:
                     return _json_response(
                         {
                             'ok': False,
