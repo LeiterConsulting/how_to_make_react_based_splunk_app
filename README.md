@@ -103,4 +103,6 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/11-feedback-closure-roadmap.md`
 - `docs/12-agent-source-routing-policy.md`
 - `docs/13-sdk-api-selection-matrix.md`
+- `docs/14-release-notes-2026-02-26.md`
+- `docs/15-new-workspace-agent-prompt-kpi-auto-layout.md`
 
