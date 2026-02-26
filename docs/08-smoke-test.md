@@ -57,9 +57,11 @@ Validate endpoint behavior via UI action or direct call path checks.
 
 Expected path strategy:
 
-1. custom controller route (`/custom/<appId>/app_rest_proxy/...`)
-2. `splunkd/__raw/servicesNS/nobody/<appId>/app_api/...`
-3. `splunkd/__raw/services/<appId>/app_api/...`
+1. `splunkd/__raw/servicesNS/nobody/<appId>/app_api/...`
+2. `splunkd/__raw/servicesNS/nobody/<appId>/<appId>/app_api/...` (if used)
+3. `splunkd/__raw/services/app_api/...`
+4. `splunkd/__raw/services/<appId>/app_api/...` (if used)
+5. custom controller route (`/custom/<appId>/app_rest_proxy/...`)
 
 Pass criteria:
 

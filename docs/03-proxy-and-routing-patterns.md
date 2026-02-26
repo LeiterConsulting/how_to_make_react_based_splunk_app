@@ -22,6 +22,14 @@ Also expose app-scoped service patterns where needed.
 
 ## Frontend fallback
 
-The client should try controller proxy first, then `__raw/servicesNS` and `__raw/services` patterns.
+The client should prefer direct `splunkd/__raw/services*` app routes first, then custom controller proxy.
+
+Recommended order:
+
+1. `splunkd/__raw/servicesNS/nobody/<appId>/app_api/...`
+2. `splunkd/__raw/servicesNS/nobody/<appId>/<appId>/app_api/...` (if used)
+3. `splunkd/__raw/services/app_api/...`
+4. `splunkd/__raw/services/<appId>/app_api/...` (if used)
+5. `/custom/<appId>/app_rest_proxy/services/<appId>/app_api/...`
 
 This improves portability across Splunk versions/environments.

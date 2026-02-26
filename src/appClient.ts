@@ -89,11 +89,11 @@ function isNotFoundError(error: unknown): boolean {
 
 async function fetchWithPathFallback<T>(pathSuffix: string, options: { method?: 'GET' | 'POST'; query?: Record<string, string>; form?: Record<string, string> } = {}) {
   const candidates = [
-    appApiPathCustomController(pathSuffix),
     appApiPath(pathSuffix),
     appApiPathAppPrefixed(pathSuffix),
     appApiPathServices(pathSuffix),
     appApiPathServicesAppPrefixed(pathSuffix),
+    appApiPathCustomController(pathSuffix),
   ]
 
   let lastError: unknown = null

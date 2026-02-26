@@ -64,9 +64,20 @@ Example:
 - `chromePolicy: suppress-actions`
 - `chromeTargets: favorite, edit, export, overflow`
 
+## Full-page viewport baseline (optional mode)
+
+When an app is intended to run as a full-page launcher shell:
+
+- Set the app root shell to `min-height: 100dvh` (or `height: 100dvh` when appropriate).
+- Avoid page-level vertical scroll for shell pages.
+- Keep scrolling inside app panels/regions rather than on `body`.
+
+This keeps dashboard wrappers from reintroducing unwanted page scroll while preserving panel-level usability.
+
 ## Validation checklist
 
 - Requested chrome targets are hidden/modified as specified.
 - Non-target controls remain unchanged.
 - App content renders and interactions still work.
 - No style leakage into other Splunk apps/views.
+- In full-page mode, no unwanted body-level vertical scrolling is introduced.
