@@ -13,6 +13,8 @@ Close remaining bootstrap gaps while keeping the template neutral, reproducible,
 - **SC3 Runtime readiness:** app mounts and completes one UI -> backend roundtrip in clean Splunk smoke tests for 90%+ rounds.
 - **SC4 Diagnostics quality:** route/path failures include attempted paths or diagnostics payload in 100% of failures.
 - **SC5 Checklist closure:** all mandatory checklist sections (1-11) are either implemented or explicitly marked deferred with rationale.
+- **SC6 UI shell resilience:** optional full-page mode can run without unwanted body-level vertical scroll (`100dvh` shell with internal region scrolling).
+- **SC7 Icon/path resilience:** icon URL handling avoids synthetic broken paths and UI uses safe fallback rendering when icon metadata is absent.
 
 ## Phase plan
 
@@ -51,6 +53,7 @@ Done criteria:
 - Reserved field collisions avoided in config writes.
 - Create/update conflict handling deterministic.
 - KV writes use explicit JSON semantics with normalized saved-count responses.
+- Persistent handler parsing tolerates common Splunk payload envelope variants (`payload`, `body`, `query`, `form`, `postargs`).
 
 ### Phase 4 — UI robustness and docs completion
 
@@ -61,6 +64,8 @@ Scope:
 Done criteria:
 - Narrow sidebar does not overlap controls.
 - Icon fallback chain resolves safely.
+- Icon URL handling avoids forcing synthetic `/static/appicons/<appId>.png` patterns unless explicitly known valid.
+- Full-page mode baseline documents viewport sizing (`100dvh`) and internal-scroll behavior.
 - Smoke-test and runbook include updated verification points.
 
 ## Execution model for agents
