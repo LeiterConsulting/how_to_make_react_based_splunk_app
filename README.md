@@ -98,4 +98,5 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/08-smoke-test.md`
 - `docs/09-agent-test-round.md`
 - `docs/10-dashboard-chrome-controls.md`
+- `docs/11-feedback-closure-roadmap.md`
 

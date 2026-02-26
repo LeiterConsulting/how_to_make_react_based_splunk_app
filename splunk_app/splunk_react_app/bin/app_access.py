@@ -9,6 +9,21 @@ from splunk.persistconn.application import PersistentServerConnectionApplication
 APP = 'splunk_react_app'
 DEFAULT_TIMEOUT_S = 3
 
+KNOWN_APP_API_PATHS = [
+    '/servicesNS/nobody/{}/app_api/ping'.format(APP),
+    '/servicesNS/nobody/{}/app_api/capability'.format(APP),
+    '/servicesNS/nobody/{}/app_api/endpoints'.format(APP),
+    '/servicesNS/nobody/{}/app_api/probe'.format(APP),
+    '/servicesNS/nobody/{}/app_api/connect'.format(APP),
+    '/servicesNS/nobody/{}/app_api/diagnostics'.format(APP),
+    '/services/app_api/ping',
+    '/services/app_api/capability',
+    '/services/app_api/endpoints',
+    '/services/app_api/probe',
+    '/services/app_api/connect',
+    '/services/app_api/diagnostics',
+]
+
 
 def _json_response(payload, status=200):
     return {
@@ -253,6 +268,20 @@ def _build_launch_url(template, host, port, user):
     return t.replace('{host}', host).replace('{port}', str(port)).replace('{user}', user or '')
 
 
+def _diagnostics_payload(path, method, required_capability, has_access, timeout_s):
+    return {
+        'ok': True,
+        'component': 'app_access',
+        'app': APP,
+        'path': path,
+        'method': method,
+        'required_capability': required_capability,
+        'has_access': has_access,
+        'probe_timeout_s': timeout_s,
+        'known_app_api_paths': KNOWN_APP_API_PATHS,
+    }
+
+
 class AppAccessApp(PersistentServerConnectionApplication):
     def __init__(self, command_line=None, command_arg=None):
         super(AppAccessApp, self).__init__()
@@ -277,6 +306,17 @@ class AppAccessApp(PersistentServerConnectionApplication):
 
             if path.endswith('/ping'):
                 return _json_response({'ok': True, 'path': path, 'method': method})
+
+            if path.endswith('/diagnostics'):
+                return _json_response(
+                    _diagnostics_payload(
+                        path=path,
+                        method=method,
+                        required_capability=required_capability,
+                        has_access=has_access,
+                        timeout_s=timeout_s,
+                    )
+                )
 
             if path.endswith('/capability'):
                 return _json_response(

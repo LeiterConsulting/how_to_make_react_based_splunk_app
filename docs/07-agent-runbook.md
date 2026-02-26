@@ -11,6 +11,8 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 - preferred UI variant (`minimal` or `rich`)
 - dashboard chrome policy (`default`, `suppress-actions`, or `custom`)
 
+Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
+
 ## Standard execution sequence
 
 1. **Initialize workspace**
