@@ -13,6 +13,7 @@ dist-splunk
 build
 dist-ssr
 *.local
+docs/feedback/
 
 # Editor directories and files
 .vscode/*
