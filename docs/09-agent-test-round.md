@@ -16,6 +16,8 @@ Verify that an agent can use this bootstrap to produce a bespoke app package wit
 - required backend capability name (optional):
 - core endpoints to implement:
 - UI variant (`minimal` or `rich`):
+- chromePolicy (`default` | `suppress-actions` | `custom`):
+- chromeTargets (if non-default):
 
 ## Agent prompt (copy/paste)
 
@@ -27,7 +29,8 @@ Constraints:
 2) Keep the 3-layer route model: React UI -> app_rest_proxy/apprestproxy -> persistent REST handler.
 3) Keep frontend fallback path strategy and include attempted paths in failures.
 4) Use existing scripts and docs in this repo, especially docs/07-agent-runbook.md and docs/08-smoke-test.md.
-5) Do not add unrelated features.
+5) Follow docs/10-dashboard-chrome-controls.md for any chrome suppression/modification.
+6) Do not add unrelated features.
 
 Required execution sequence:
 - Run rename: npm run template:rename -- --appId <APP_ID> --appLabel "<APP_LABEL>"

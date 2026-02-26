@@ -9,6 +9,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 - target backend capability requirement(s), if needed
 - core endpoint set needed by UI
 - preferred UI variant (`minimal` or `rich`)
+- dashboard chrome policy (`default`, `suppress-actions`, or `custom`)
 
 ## Standard execution sequence
 
@@ -30,24 +31,28 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
    - Minimal first for fast route bring-up: `npm run variant:minimal`
    - Use rich variant when feature surface requires it: `npm run variant:rich`
 
-4. **Implement backend domain logic**
+4. **Apply chrome policy (if requested)**
+   - Follow `docs/10-dashboard-chrome-controls.md`.
+   - Keep suppression/modification scoped to requested view only.
+
+5. **Implement backend domain logic**
    - Replace logic in persistent REST handler under `splunk_app/<appId>/bin/*.py`.
    - Keep structured JSON error payloads and enable capability checks only when required by app domain.
    - Preserve session/auth extraction robustness.
 
-5. **Validate routing and exposure contracts**
+6. **Validate routing and exposure contracts**
    - Confirm endpoint matches in `default/restmap.conf`.
    - Confirm controller exposure in `default/web.conf` for both:
      - `app_rest_proxy/*`
      - `apprestproxy/*`
    - Ensure app-scoped endpoint patterns used by UI are exposed and authenticated.
 
-6. **Build and package**
+7. **Build and package**
    - `npm run build:splunk`
    - `npm run package:splunk`
    - Confirm output exists: `build/<appId>.tar.gz`
 
-7. **Install and runtime validate (Splunk test instance)**
+8. **Install and runtime validate (Splunk test instance)**
    - Install tarball in Splunk Apps UI.
    - Restart Splunk.
    - Open app dashboard and verify mount.

@@ -37,7 +37,8 @@ Use this routing order for implementation agents:
 1. `docs/09-agent-test-round.md` (test-round prompt + execution flow)
 2. `docs/07-agent-runbook.md` (required build/package sequence)
 3. `docs/08-smoke-test.md` (validation and pass/fail criteria)
-4. `docs/06-agent-roadmap.md` (phase goals and release criteria)
+4. `docs/10-dashboard-chrome-controls.md` (safe chrome suppression/modification policy)
+5. `docs/06-agent-roadmap.md` (phase goals and release criteria)
 
 ## Starter structure
 
@@ -96,4 +97,5 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/07-agent-runbook.md`
 - `docs/08-smoke-test.md`
 - `docs/09-agent-test-round.md`
+- `docs/10-dashboard-chrome-controls.md`
 
