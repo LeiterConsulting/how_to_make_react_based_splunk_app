@@ -7,7 +7,7 @@ This repository is a drop-in starter for building rich Splunk apps with:
 - Optional Splunk Web custom controller proxy (for resilient browser calls)
 - Splunk packaging scripts (`tar.gz`) for app install testing
 
-It is based on proven patterns used in your production-style apps (`AppCanvas`, `LLM Proxy`, and iterative Splunk app hardening cycles).
+It is based on proven patterns used in production-style apps and iterative Splunk app hardening cycles.
 
 ## What you get
 
