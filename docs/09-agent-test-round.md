@@ -28,9 +28,10 @@ Constraints:
 1) Use appId=<APP_ID> and appLabel=<APP_LABEL> as canonical identity.
 2) Keep the 3-layer route model: React UI -> app_rest_proxy/apprestproxy -> persistent REST handler.
 3) Keep frontend fallback path strategy and include attempted paths in failures.
-4) Use existing scripts and docs in this repo, especially docs/07-agent-runbook.md and docs/08-smoke-test.md.
+4) Use existing scripts and docs in this repo, especially docs/12-agent-source-routing-policy.md, docs/13-sdk-api-selection-matrix.md, docs/07-agent-runbook.md, and docs/08-smoke-test.md.
 5) Follow docs/10-dashboard-chrome-controls.md for any chrome suppression/modification.
 6) Do not add unrelated features.
+7) For each major implementation decision, state selected API surface (JS SDK/Python SDK/Java SDK/Web Framework/raw REST) and why.
 
 Required execution sequence:
 - Run rename: npm run template:rename -- --appId <APP_ID> --appLabel "<APP_LABEL>"

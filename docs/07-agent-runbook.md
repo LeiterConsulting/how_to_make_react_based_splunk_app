@@ -12,6 +12,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 - dashboard chrome policy (`default`, `suppress-actions`, or `custom`)
 
 Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
+Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matrix.md` to choose official SDK/API surfaces before implementation.
 
 ## Standard execution sequence
 
