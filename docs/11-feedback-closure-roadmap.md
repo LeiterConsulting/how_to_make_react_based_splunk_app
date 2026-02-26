@@ -30,16 +30,16 @@ Done criteria:
 Status:
 - **Started and implemented in this round.**
 
-### Phase 2 — App list and startup preference
+### Phase 2 — Stateful UX reliability patterns
 
 Scope:
-- App listing suppression controls (`exclude_app_ids`, `exclude_label_patterns`).
-- Persist and apply default folder preference, with safe fallback to `All Apps`.
+- Add server-side suppression/filter controls for non-user-usable platform entries.
+- Define and persist user default selection/state with deterministic fallback behavior.
 
 Done criteria:
 - Settings are read from app conf and applied server-side.
-- Folders API returns explicit `default_folder`.
-- Initial load applies default selection semantics per checklist.
+- API contracts return explicit default-selection state (field name can vary by app domain).
+- Initial load applies documented fallback semantics when persisted state no longer exists.
 
 ### Phase 3 — Write-safety contracts
 
