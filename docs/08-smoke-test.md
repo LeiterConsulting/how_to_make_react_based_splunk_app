@@ -80,6 +80,29 @@ Pass criteria:
 - Allowed call succeeds with normalized JSON payload.
 - Denied call returns correct status + structured JSON error.
 
+## 5b) Runtime mutation checks (required)
+
+Run at least one mutation cycle for each category in live Splunk runtime:
+
+1. Config mutation
+  - one create/update request (for example: profile/config upsert)
+2. KV mutation
+  - one KV save/write request
+3. KV readback
+  - one KV get/read request for just-written key
+
+Capture requirements:
+
+- request payload shape used,
+- response status code,
+- response envelope body,
+- fallback path attempted (if request failed).
+
+Pass criteria:
+
+- All three mutation categories succeed with normalized envelopes.
+- No parser/transport failures from envelope shape variation (`payload`, `body`, `query`, `form`, `postargs`, nested `__json`).
+
 ## 6) Optional server-side diagnostics
 
 If CLI access is available, run:
@@ -102,9 +125,17 @@ Record result as:
 - suspected root cause file(s)
 - remediation patch summary
 
+Failure record template (required when any check fails):
+
+- gate name
+- failing command/request
+- attempted paths (if applicable)
+- root-cause file(s)
+- minimal patch plan (1-3 changes)
+
 ## Minimum release bar
 
 Before publishing template or generated app changes:
 
-- Sections 1-5 must pass.
+- Sections 1-5 and 5b must pass.
 - Section 6 is strongly recommended when infrastructure access permits.

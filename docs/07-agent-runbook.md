@@ -60,6 +60,7 @@ Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matr
    - Restart Splunk.
    - Open app dashboard and verify mount.
    - Verify one successful UI -> backend roundtrip.
+   - For capability-heavy rounds, execute runtime mutation checks (config upsert + KV save + KV get) and capture payload/response evidence.
 
 ## Required artifacts for handoff
 

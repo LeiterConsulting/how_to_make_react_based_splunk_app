@@ -15,6 +15,7 @@ Close remaining bootstrap gaps while keeping the template neutral, reproducible,
 - **SC5 Checklist closure:** all mandatory checklist sections (1-11) are either implemented or explicitly marked deferred with rationale.
 - **SC6 UI shell resilience:** optional full-page mode can run without unwanted body-level vertical scroll (`100dvh` shell with internal region scrolling).
 - **SC7 Icon/path resilience:** icon URL handling avoids synthetic broken paths and UI uses safe fallback rendering when icon metadata is absent.
+- **SC8 Mutation transport resilience:** config/KV mutation endpoints tolerate Splunk runtime payload/transport variants without manual patching.
 
 ## Phase plan
 
@@ -54,6 +55,7 @@ Done criteria:
 - Create/update conflict handling deterministic.
 - KV writes use explicit JSON semantics with normalized saved-count responses.
 - Persistent handler parsing tolerates common Splunk payload envelope variants (`payload`, `body`, `query`, `form`, `postargs`).
+- Write helpers include transport/response compatibility fallbacks (`jsonargs`, bytes/`rawargs` where needed, non-JSON response tolerance) with clear error aggregation.
 
 ### Phase 4 — UI robustness and docs completion
 

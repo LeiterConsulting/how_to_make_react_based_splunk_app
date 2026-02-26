@@ -34,6 +34,8 @@ Use this matrix to select the correct implementation surface before coding.
 - Use explicit methods and content types.
 - Keep reserved field names out of business payload contracts.
 - Prefer normalized response envelopes.
+- Include write transport compatibility fallbacks for Splunk runtime variance (`jsonargs`, bytes/`rawargs` + JSON content type when required).
+- Tolerate non-JSON write responses where runtimes return empty/plain bodies.
 
 ## Definition of a good selection
 
