@@ -26,7 +26,7 @@ You are implementing a bespoke Splunk app using this repository bootstrap.
 
 Constraints:
 1) Use appId=<APP_ID> and appLabel=<APP_LABEL> as canonical identity.
-2) Use Splunk 10 launcher-native baseline: app tile route must resolve to /app/<APP_ID>/home using a real home.xml host.
+2) Use Splunk 10 launcher-view baseline: app tile route must resolve to /app/<APP_ID>/home using a real home.xml host.
 3) Keep the 3-layer route model: React UI -> app_rest_proxy/apprestproxy -> persistent REST handler.
 4) Keep frontend fallback path strategy and include attempted paths in failures.
 5) Use existing scripts and docs in this repo, especially docs/19-splunk10-native-baseline.md, docs/18-native-feasibility-check.md, docs/12-agent-source-routing-policy.md, docs/13-sdk-api-selection-matrix.md, docs/07-agent-runbook.md, and docs/08-smoke-test.md.
@@ -42,6 +42,7 @@ Required execution sequence:
 - Build/package: npm run package:splunk
 - Produce validation report with:
   - package path,
+  - host shell evidence (`dashboard-wrapper` or `non-wrapper`),
   - attempted route diagnostics for any failures,
   - checklist status mapped to docs/08-smoke-test.md.
 

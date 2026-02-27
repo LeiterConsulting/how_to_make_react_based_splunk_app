@@ -36,7 +36,8 @@ Pass criteria:
 
 - App appears in launcher with expected label.
 - Dashboard/view mounts without blank screen.
-- Launcher route resolves to intended host page (for launcher-native mode: `/app/<appId>/home`).
+- Launcher route resolves to intended host page (for launcher-view mode: `/app/<appId>/home`).
+- Host shell behavior is recorded as observed evidence (`dashboard-wrapper` or `non-wrapper`).
 - Launcher does not fall back to `/app/<appId>/alerts`.
 
 ## 3) Static asset health
@@ -155,6 +156,7 @@ Record result as:
 
 - **PASS** or **FAIL** for each section (1-6)
 - host mode declaration: `Host Mode: launcher-native-view` | `controller-native-surface`
+- shell evidence declaration: `Shell: dashboard-wrapper` | `non-wrapper`
 - native feasibility classification: `custom-controller available` | `custom-controller unavailable`
 - failing request/command details (if any)
 - suspected root cause file(s)

@@ -14,6 +14,8 @@ These are not interchangeable.
 - `launcher-native-view`: app tile opens a real view route (`/app/<appId>/home`) and React mounts in that host view.
 - `controller-native-surface`: controller-only page under `/custom/...`; usable via explicit links, not launcher tiles.
 
+`launcher-native-view` describes route ownership and mount ownership only. It does not guarantee non-dashboard shell rendering.
+
 Do not label dashboard redirect shims as `native-first`.
 
 ## Decision criteria
@@ -23,6 +25,8 @@ Choose `launcher-native-view` when:
 - app tile launch reliability is required,
 - you want native app shell behavior without redirect shims,
 - you want a stable host view (`home.xml`) for React mounting.
+
+Record shell evidence during validation (`dashboard-wrapper` or `non-wrapper`) instead of inferring from route pattern alone.
 
 Choose `controller-native-surface` when:
 
@@ -66,6 +70,7 @@ Host mode changes where the UI mounts, not the backend route contract.
 
 - app page route resolves with authenticated session.
 - React root mounts without dashboard wrapper regressions.
+- host shell classification is explicitly recorded (`dashboard-wrapper` or `non-wrapper`).
 - app tile does not fall back to `/app/<appId>/alerts`.
 - fallback API path behavior unchanged.
 - full-page shell behavior (`100dvh`, internal scroll) remains stable.

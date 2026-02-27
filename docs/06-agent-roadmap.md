@@ -6,7 +6,7 @@ This roadmap operationalizes `docs/feedback/BOOTSTRAP_UPDATE_CHECKLIST.md` into 
 
 Enable an agent to go from "new app intent" to "installable Splunk package" with predictable outcomes, low manual intervention, and clear failure diagnostics.
 
-Baseline focus: Splunk 10 launcher-native delivery (`/app/<appId>/home`) with deterministic packaging and runtime validation.
+Baseline focus: Splunk 10 launcher-view delivery (`/app/<appId>/home`) with deterministic packaging and runtime validation.
 
 ## Migration note (2026-02)
 

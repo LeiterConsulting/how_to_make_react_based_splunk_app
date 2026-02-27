@@ -9,7 +9,7 @@ This repository is a drop-in starter for building rich Splunk apps with:
 
 It is based on proven patterns used in production-style apps and iterative Splunk app hardening cycles.
 
-Primary target: Splunk 10.x with launcher-native app delivery as the default architecture.
+Primary target: Splunk 10.x with launcher-view app delivery (`/app/<appId>/home`) as the default deterministic architecture.
 
 ## What you get
 

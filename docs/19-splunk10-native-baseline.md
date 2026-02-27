@@ -1,4 +1,4 @@
-# Splunk 10 Native Baseline (Deterministic)
+# Splunk 10 Launcher-View Baseline (Deterministic)
 
 This document defines the required base architecture for this repository going forward.
 
@@ -8,16 +8,17 @@ This document defines the required base architecture for this repository going f
 - 9.x compatibility is not a goal for this baseline.
 - Deliverable goal: installable, repeatable app packages that launch into an app-owned React shell.
 
-## Native baseline definition (for this repo)
+## Baseline definition (for this repo)
 
-`native` means:
+Deterministic baseline means:
 
 1. App tile launches into app-owned host route: `/app/<appId>/home`
 2. `home.xml` is a minimal React mount host (no dashboard searches or redirect shims)
 3. UI behavior and rendering are owned by React app code
 4. Backend behavior is owned by persistent REST + optional controller compatibility path
 
-`native` does **not** assume controller-native launch routes are available in every runtime.
+This baseline does **not** claim a controller-native launch surface.
+This baseline also does **not** claim dashboard chrome absence; host-shell behavior is runtime-dependent and must be recorded as observed evidence.
 
 ## Deterministic architecture contract
 
@@ -48,6 +49,12 @@ If unavailable:
 - declare controller limitation explicitly in validation report,
 - do not claim controller-native capability.
 
+Required host evidence for every run:
+
+- observed launch URL
+- observed host mode (`launcher-native-view` or `controller-native-surface`)
+- observed shell behavior (`dashboard-wrapper` or `non-wrapper`)
+
 ## Required acceptance gates
 
 1. `npm run sanity:appid`
@@ -58,6 +65,7 @@ If unavailable:
 4. API-shape compliance gate (canonical first attempt)
 5. Runtime mutation checks (config upsert + KV save + KV readback)
 6. Controller feasibility classification recorded
+7. Host evidence recorded (launch URL + host mode + shell behavior)
 
 ## Deterministic fallback policy
 
