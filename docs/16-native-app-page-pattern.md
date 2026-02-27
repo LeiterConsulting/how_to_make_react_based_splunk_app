@@ -1,6 +1,6 @@
 # Native App Page Pattern (Architecture Choice)
 
-Use this guide when choosing between launcher-native-view and controller-native-surface patterns for React mounting.
+Use this guide when choosing between launcher-bridge and controller-native-surface patterns for React mounting.
 
 ## Route model (must be explicit)
 
@@ -11,22 +11,16 @@ These are not interchangeable.
 
 ## Terminology
 
-- `launcher-native-view`: app tile opens a real view route (`/app/<appId>/home`) and React mounts in that host view.
+- `launcher-bridge`: app tile opens a real view route (`/app/<appId>/home`) that immediately redirects to `/custom/<appId>/app_page`.
 - `controller-native-surface`: controller-only page under `/custom/...`; usable via explicit links, not launcher tiles.
 
-`launcher-native-view` describes route ownership and mount ownership only. It does not guarantee non-dashboard shell rendering.
+`launcher-bridge` is a launcher compatibility path only; runtime UI should be delivered from controller-native surface.
 
 Do not label dashboard redirect shims as `native-first`.
 
 ## Decision criteria
 
-Choose `launcher-native-view` when:
-
-- app tile launch reliability is required,
-- you want native app shell behavior without redirect shims,
-- you want a stable host view (`home.xml`) for React mounting.
-
-Record shell evidence during validation (`dashboard-wrapper` or `non-wrapper`) instead of inferring from route pattern alone.
+Use `launcher-bridge` when app-tile entry is required, but keep runtime target as `/custom/<appId>/app_page`.
 
 Choose `controller-native-surface` when:
 
@@ -50,21 +44,22 @@ Controller-native claims require feasibility classification from `docs/18-native
 
 ## 3-layer interplay (host mode independent)
 
-1. UI shell (`launcher-native-view`)
+1. UI shell (`launcher-bridge` -> `controller-native-surface`)
 2. controller compatibility route (`app_rest_proxy` / `apprestproxy`)
 3. persistent REST handler (`restmap.conf`)
 
 Host mode changes where the UI mounts, not the backend route contract.
 
-## Migration checklist (legacy host -> launcher-native-view)
+## Migration checklist (legacy host -> launcher-bridge + controller-native)
 
-1. Declare target host mode in handoff: `Host Mode: launcher-native-view`.
+1. Declare target host mode in handoff: `Host Mode: launcher-bridge`.
 2. Set `default/app.conf` -> `default_view = home`.
 3. Ensure `default/data/ui/nav/default.xml` uses `<view name="home" default="true"/>`.
-4. Ensure `default/data/ui/views/home.xml` exists and mounts React root directly.
-5. Keep backend routes unchanged unless explicitly required.
-6. Re-validate web exposure and auth/session behavior.
-7. Re-run package + smoke tests.
+4. Ensure `default/data/ui/views/home.xml` exists and redirects to `/custom/<appId>/app_page`.
+5. Ensure `appserver/controllers/app_page.py` serves controller-native React mount HTML.
+6. Keep backend routes unchanged unless explicitly required.
+7. Re-validate web exposure and auth/session behavior.
+8. Re-run package + smoke tests.
 
 ## Smoke checks for native host mode
 

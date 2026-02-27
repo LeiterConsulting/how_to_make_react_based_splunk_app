@@ -16,7 +16,8 @@ Every capability-heavy handoff must include one of these exact classifications.
 ## Validation sequence
 
 1. Validate launcher route behavior
-   - confirm launcher route is view-backed: `/app/<appId>/home`
+   - confirm launcher bridge route resolves: `/app/<appId>/home`
+   - confirm it redirects to `/custom/<appId>/app_page`
 2. Run control controller route test
    - verify a known controller path resolves (for example app proxy control route)
 3. Run target controller route test
@@ -31,7 +32,7 @@ Classify as: `custom-controller unavailable`
 Implications:
 
 - do not pursue controller-native surface in this runtime,
-- use `launcher-native-view` host mode,
+- classify native objective failed for the round,
 - declare non-native controller limitation in handoff.
 
 ### Branch B — control route passes, target route fails

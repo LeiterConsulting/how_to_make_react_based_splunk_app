@@ -99,6 +99,7 @@ function main() {
   const viewsDir = path.join(appDir, 'default', 'data', 'ui', 'views')
   const restmapPath = path.join(appDir, 'default', 'restmap.conf')
   const webPath = path.join(appDir, 'default', 'web.conf')
+  const appPageControllerPath = path.join(appDir, 'appserver', 'controllers', 'app_page.py')
   const defaultView = getDefaultViewFromAppConf(appConfPath)
   const defaultViewPath = path.join(viewsDir, `${defaultView || 'home'}.xml`)
   const legacyViewPath = path.join(viewsDir, `${appId}.xml`)
@@ -159,17 +160,22 @@ function main() {
   requirePath(appDir, 'App folder exists')
   requirePath(defaultViewPath, 'Configured launcher default view file exists')
   requirePath(path.join(appDir, 'static', 'appLogo.png'), 'App icon exists')
+  requirePath(appPageControllerPath, 'Controller-native app page controller exists')
 
   requireRegex(appConfPath, /^\s*default_view\s*=\s*home\s*$/m, 'app.conf default_view is home')
   requireRegex(navPath, /<view\s+name=["']home["'][^>]*default=["']true["']/m, 'Nav default view is home')
   requireRegex(restmapPath, new RegExp(`match\\s*=\\s*/${appId}/app_api/`), 'restmap includes app-prefixed app_api routes')
   requireRegex(webPath, /pattern\s*=\s*app_rest_proxy\/\*/, 'web.conf exposes app_rest_proxy')
   requireRegex(webPath, /pattern\s*=\s*apprestproxy\/\*/, 'web.conf exposes apprestproxy')
+  requireRegex(webPath, /pattern\s*=\s*app_page\s*$/m, 'web.conf exposes app_page controller route')
   requireRegex(webPath, new RegExp(`pattern\\s*=\\s*${appId}/app_api/\\*\\*`), 'web.conf exposes app-scoped app_api routes')
 
-  requireRegex(defaultViewPath, new RegExp(`stylesheet=["']${appId}\\.css["']`), 'Launcher view references appId CSS bundle')
-  requireRegex(defaultViewPath, new RegExp(`script=["']${appId}\\.js["']`), 'Launcher view references appId JS bundle')
-  requireRegex(defaultViewPath, /id=["']splunk-react-app-root["']/, 'Launcher view contains React root mount')
+  requireRegex(defaultViewPath, new RegExp(`/custom/${appId}/app_page`), 'Launcher view redirects to controller-native app_page route')
+
+  requireRegex(appPageControllerPath, new RegExp(`APP\\s*=\\s*'${appId}'`), 'app_page controller APP constant matches appId')
+  requireRegex(appPageControllerPath, /id="splunk-react-app-root"/, 'app_page controller serves React root mount')
+  requireRegex(appPageControllerPath, /_static_asset\(f'\{APP\}\.js'\)/, 'app_page controller references appId JS bundle template')
+  requireRegex(appPageControllerPath, /_static_asset\(f'\{APP\}\.css'\)/, 'app_page controller references appId CSS bundle template')
 
   checks.push('Launcher view does not include search stanzas')
   if (fs.existsSync(defaultViewPath)) {

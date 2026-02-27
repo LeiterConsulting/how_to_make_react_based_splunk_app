@@ -1,10 +1,25 @@
-<dashboard version="1.1" theme="dark" stylesheet="splunk_react_app.css" script="splunk_react_app.js">
+<dashboard version="1.1" theme="dark">
   <label>Splunk React App</label>
-  <description>Launcher-native React host view.</description>
+  <description>Launcher bridge to controller-native app page.</description>
   <row>
     <panel>
       <html encoded="false">
-        <div id="splunk-react-app-root"></div>
+        <div id="splunk-react-launch-bridge">Opening app page...</div>
+        <script>
+          (function () {
+            try {
+              var pathname = window.location.pathname || '';
+              var localeMatch = pathname.match(/^\/([^/]+)\//);
+              var locale = localeMatch ? localeMatch[1] : 'en-US';
+              var target = '/' + locale + '/custom/splunk_react_app/app_page';
+              if (window.location.pathname !== target) {
+                window.location.replace(target);
+                return;
+              }
+            } catch (_err) {
+            }
+          })();
+        </script>
       </html>
     </panel>
   </row>

@@ -1,4 +1,4 @@
-# Splunk 10 Launcher-View Baseline (Deterministic)
+# Splunk 10 Controller-Native Baseline (Deterministic)
 
 This document defines the required base architecture for this repository going forward.
 
@@ -12,15 +12,12 @@ This document defines the required base architecture for this repository going f
 
 Deterministic baseline means:
 
-1. App tile launches into app-owned host route: `/app/<appId>/home`
-2. `home.xml` is a minimal React mount host (no dashboard searches or redirect shims)
-3. UI behavior and rendering are owned by React app code
-4. Backend behavior is owned by persistent REST + optional controller compatibility path
+1. App tile launches into app-owned bridge route: `/app/<appId>/home`
+2. `home.xml` immediately redirects to `/custom/<appId>/app_page`
+3. Runtime UI mounts on controller-native surface (`/custom/...`) instead of SimpleXML host
+4. Backend behavior is owned by persistent REST + controller compatibility path
 
-This baseline does **not** claim a controller-native launch surface.
-This baseline also does **not** claim dashboard chrome absence; host-shell behavior is runtime-dependent and must be recorded as observed evidence.
-
-Expected default for this baseline in Splunk Web launcher flows is often `dashboard-wrapper`.
+This baseline requires controller-native runtime delivery.
 
 ## Deterministic architecture contract
 
@@ -28,12 +25,13 @@ Required files/config:
 
 - `default/app.conf` contains `default_view = home`
 - `default/data/ui/nav/default.xml` contains `<view name="home" default="true"/>`
-- `default/data/ui/views/home.xml` exists and references `<appId>.js` and `<appId>.css`
-- `home.xml` contains React root mount (`splunk-react-app-root`) and no search stanzas
+- `default/data/ui/views/home.xml` exists and redirects to `/custom/<appId>/app_page`
+- `appserver/controllers/app_page.py` exists and serves HTML with `splunk-react-app-root` mount
 
 Required route model:
 
-- Launcher/view route: `/app/<appId>/home`
+- Launcher bridge route: `/app/<appId>/home`
+- Controller-native route: `/custom/<appId>/app_page`
 - Persistent REST: `/.../app_api/...` via `restmap.conf`
 - Controller compatibility route: `/custom/<appId>/app_rest_proxy/...` (runtime-dependent)
 
@@ -45,16 +43,12 @@ Required output for every run:
 
 - `custom-controller available` **or** `custom-controller unavailable`
 
-If unavailable:
-
-- keep launcher-native-view architecture,
-- declare controller limitation explicitly in validation report,
-- do not claim controller-native capability.
+If unavailable, mark round as failed for native-page objective and stop claiming native delivery.
 
 Required host evidence for every run:
 
 - observed launch URL
-- observed host mode (`launcher-native-view` or `controller-native-surface`)
+- observed host mode (`launcher-bridge` or `controller-native-surface`)
 - observed shell behavior (`dashboard-wrapper` or `non-wrapper`)
 
 Native-page objective classification rule:
@@ -68,6 +62,7 @@ Native-page objective classification rule:
 3. Launcher route validation:
    - app tile lands on `/app/<appId>/home`
    - not `/app/<appId>/alerts`
+   - launcher route redirects to `/custom/<appId>/app_page`
 4. API-shape compliance gate (canonical first attempt)
 5. Runtime mutation checks (config upsert + KV save + KV readback)
 6. Controller feasibility classification recorded
@@ -75,8 +70,8 @@ Native-page objective classification rule:
 
 ## Deterministic fallback policy
 
-If any controller route cannot be validated in runtime:
+If controller-native app page cannot be validated in runtime:
 
-- keep app functional on launcher-native-view host,
-- continue using persistent REST path model,
-- treat controller path as optional compatibility layer, not core launch dependency.
+- fail native-page objective for the round,
+- continue using persistent REST path model for diagnostics only,
+- do not classify output as native.

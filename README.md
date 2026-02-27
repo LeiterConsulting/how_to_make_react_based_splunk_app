@@ -9,7 +9,7 @@ This repository is a drop-in starter for building rich Splunk apps with:
 
 It is based on proven patterns used in production-style apps and iterative Splunk app hardening cycles.
 
-Primary target: Splunk 10.x with launcher-view app delivery (`/app/<appId>/home`) as the default deterministic architecture.
+Primary target: Splunk 10.x with controller-native runtime (`/custom/<appId>/app_page`) and launcher bridge (`/app/<appId>/home`) for tile entry.
 
 ## What you get
 
@@ -67,6 +67,7 @@ Feedback convention reference: `docs/feedback/README.md`
 - `splunk_app/splunk_react_app/bin/app_access.py` — persistent REST handler
 - `splunk_app/splunk_react_app/default/restmap.conf` — REST endpoint registrations
 - `splunk_app/splunk_react_app/default/web.conf` — Splunk Web exposure rules
+- `splunk_app/splunk_react_app/appserver/controllers/app_page.py` — controller-native app page surface (non-dashboard)
 - `splunk_app/splunk_react_app/appserver/controllers/app_rest_proxy.py` — custom controller proxy
 - `scripts/splunk-sync.mjs` — copies built JS/CSS to Splunk static path
 - `scripts/splunk-package.mjs` — creates install tarball

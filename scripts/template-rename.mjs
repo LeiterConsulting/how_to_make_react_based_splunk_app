@@ -169,6 +169,7 @@ function main() {
     path.join(activeAppDir, 'bin', 'app_access.py'),
     path.join(activeAppDir, 'appserver', 'controllers', 'app_rest_proxy.py'),
     path.join(activeAppDir, 'appserver', 'controllers', 'apprestproxy.py'),
+    path.join(activeAppDir, 'appserver', 'controllers', 'app_page.py'),
     path.join(activeAppDir, 'default', 'app.conf'),
     path.join(activeAppDir, 'default', 'restmap.conf'),
     path.join(activeAppDir, 'default', 'web.conf'),

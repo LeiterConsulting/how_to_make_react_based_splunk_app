@@ -10,12 +10,12 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 - core endpoint set needed by UI
 - preferred UI variant (`minimal` or `rich`)
 - dashboard chrome policy (`default`, `suppress-actions`, or `custom`)
-- host mode (`launcher-native-view` default | `controller-native-surface` optional)
+- host mode (`controller-native-surface` required baseline with launcher bridge)
 
 Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
 Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matrix.md` to choose official SDK/API surfaces before implementation.
 Use `docs/16-native-app-page-pattern.md` to declare host mode early, `docs/18-native-feasibility-check.md` for runtime classification, and `docs/17-splunk-runtime-variance.md` for runtime adaptation rules.
-Use `docs/19-splunk10-native-baseline.md` as the required launcher-view architecture baseline.
+Use `docs/19-splunk10-native-baseline.md` as the required controller-native architecture baseline.
 Use `docs/20-fact-evidence-standard.md` to classify guidance claims as documentation fact, runtime fact, or policy rule.
 
 ## Canonical API shape requirements (first attempt)
@@ -71,8 +71,8 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
    - Ensure app-scoped endpoint patterns used by UI are exposed and authenticated.
 
 7. **Validate host-mode contract**
-   - `launcher-native-view`: launcher route must resolve via `/app/<appId>/home` with real `home.xml` host.
-   - `controller-native-surface`: route lives under `/custom/<appId>/...` and must not be documented as launcher destination.
+   - launcher bridge: `/app/<appId>/home` must redirect to `/custom/<appId>/app_page`.
+   - `controller-native-surface`: runtime route must resolve under `/custom/<appId>/...`.
    - host-shell rendering must be reported as observed evidence (`dashboard-wrapper` or `non-wrapper`), not inferred from route naming.
 
 8. **Run native feasibility classification (required for controller-native claims)**
@@ -80,7 +80,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
    - Record one classification exactly:
      - `custom-controller available`
      - `custom-controller unavailable`
-   - If unavailable, pivot to `launcher-native-view` and declare limitation explicitly.
+   - If unavailable, mark native-page objective failed and declare limitation explicitly.
 
 9. **Build and package**
    - `npm run build:splunk`
@@ -97,7 +97,8 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
 ## Required artifacts for handoff
 
 - Installable package: `build/<appId>.tar.gz`
-- Host mode declaration with rationale: `launcher-native-view` | `controller-native-surface`.
+- Host mode declaration with rationale: `launcher-bridge` | `controller-native-surface`.
+ - Launcher bridge result: `redirected-to-controller` | `not-redirected`.
 - Native feasibility classification: `custom-controller available` | `custom-controller unavailable`.
 - Shell evidence declaration: `dashboard-wrapper` | `non-wrapper`.
 - Native-page objective verdict: `PASS` | `FAIL`.

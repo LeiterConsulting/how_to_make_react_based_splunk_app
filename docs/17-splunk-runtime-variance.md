@@ -34,7 +34,7 @@ This appendix captures common runtime deltas observed across Splunk environments
 
 - Symptom: host-shell behavior, chrome controls, and scroll behavior differ by host mode.
 - Guidance:
-  - declare host mode in every handoff (`launcher-native-view`, `dashboard-wrapper`, or `controller-native-surface`),
+  - declare host mode in every handoff (`launcher-bridge` or `controller-native-surface`),
   - validate host-mode-specific smoke checks,
   - keep backend route contracts host-mode independent.
 
@@ -47,7 +47,7 @@ Immediate triage:
 
 1. Verify `default/app.conf` contains `default_view = home`.
 2. Verify `default/data/ui/nav/default.xml` includes `<view name="home" default="true"/>`.
-3. Verify `default/data/ui/views/home.xml` exists and references `<appId>.js`/`<appId>.css`.
+3. Verify `default/data/ui/views/home.xml` exists and redirects to `/custom/<appId>/app_page`.
 4. Re-run `npm run sanity:appid` and smoke checks before runtime retest.
 
 Classification requirement:
