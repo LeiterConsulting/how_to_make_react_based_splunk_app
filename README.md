@@ -37,12 +37,13 @@ Use this routing order for implementation agents:
 1. `docs/09-agent-test-round.md` (test-round prompt + execution flow)
 2. `docs/12-agent-source-routing-policy.md` (official-doc routing and decision policy)
 3. `docs/16-native-app-page-pattern.md` (host architecture choice and migration guidance)
-4. `docs/13-sdk-api-selection-matrix.md` (SDK/API surface selection rules)
-5. `docs/07-agent-runbook.md` (required build/package sequence)
-6. `docs/08-smoke-test.md` (validation and pass/fail criteria)
-7. `docs/10-dashboard-chrome-controls.md` (safe chrome suppression/modification policy)
-8. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
-9. `docs/06-agent-roadmap.md` (phase goals and release criteria)
+4. `docs/18-native-feasibility-check.md` (runtime classification for controller-native viability)
+5. `docs/13-sdk-api-selection-matrix.md` (SDK/API surface selection rules)
+6. `docs/07-agent-runbook.md` (required build/package sequence)
+7. `docs/08-smoke-test.md` (validation and pass/fail criteria)
+8. `docs/10-dashboard-chrome-controls.md` (safe chrome suppression/modification policy)
+9. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
+10. `docs/06-agent-roadmap.md` (phase goals and release criteria)
 
 
 Feedback-loop waterfall (required on every test app cycle):
@@ -120,6 +121,7 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/15-new-workspace-agent-prompt-kpi-auto-layout.md`
 - `docs/16-native-app-page-pattern.md`
 - `docs/17-splunk-runtime-variance.md`
+- `docs/18-native-feasibility-check.md`
 
 - `docs/feedback/README.md`
 - `docs/feedback/index_kpi_autolab/README.md`

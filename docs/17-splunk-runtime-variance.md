@@ -49,3 +49,8 @@ Immediate triage:
 2. Verify `default/data/ui/nav/default.xml` includes `<view name="home" default="true"/>`.
 3. Verify `default/data/ui/views/home.xml` exists and references `<appId>.js`/`<appId>.css`.
 4. Re-run `npm run sanity:appid` and smoke checks before runtime retest.
+
+Classification requirement:
+
+- If control controller route also fails: `custom-controller unavailable`
+- If control controller route passes but target fails: `custom-controller available` with app-level mismatch

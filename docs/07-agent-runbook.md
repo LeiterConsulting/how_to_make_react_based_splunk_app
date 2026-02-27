@@ -14,7 +14,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 
 Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
 Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matrix.md` to choose official SDK/API surfaces before implementation.
-Use `docs/16-native-app-page-pattern.md` to declare host mode early, and `docs/17-splunk-runtime-variance.md` for runtime adaptation rules.
+Use `docs/16-native-app-page-pattern.md` to declare host mode early, `docs/18-native-feasibility-check.md` for runtime classification, and `docs/17-splunk-runtime-variance.md` for runtime adaptation rules.
 
 ## Canonical API shape requirements (first attempt)
 
@@ -73,12 +73,19 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
    - `controller-native-surface`: route lives under `/custom/<appId>/...` and must not be documented as launcher destination.
    - `dashboard-wrapper`: document wrapper usage explicitly and avoid labeling it native-first.
 
-8. **Build and package**
+8. **Run native feasibility classification (required for controller-native claims)**
+   - Execute control route test and target route test per `docs/18-native-feasibility-check.md`.
+   - Record one classification exactly:
+     - `custom-controller available`
+     - `custom-controller unavailable`
+   - If unavailable, pivot to `launcher-native-view` and declare limitation explicitly.
+
+9. **Build and package**
    - `npm run build:splunk`
    - `npm run package:splunk`
    - Confirm output exists: `build/<appId>.tar.gz`
 
-9. **Install and runtime validate (Splunk test instance)**
+10. **Install and runtime validate (Splunk test instance)**
    - Install tarball in Splunk Apps UI.
    - Restart Splunk.
    - Open app dashboard and verify mount.
@@ -89,6 +96,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
 
 - Installable package: `build/<appId>.tar.gz`
 - Host mode declaration with rationale: `launcher-native-view` | `dashboard-wrapper` | `controller-native-surface`.
+- Native feasibility classification: `custom-controller available` | `custom-controller unavailable`.
 - Brief validation report containing:
   - build/package command outputs
   - route verification notes (or `btool` output)

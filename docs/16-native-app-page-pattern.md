@@ -36,6 +36,8 @@ Choose `controller-native-surface` when:
 - you do not require launcher tile to land directly on controller path,
 - you will provide explicit route links and documentation.
 
+Controller-native claims require feasibility classification from `docs/18-native-feasibility-check.md`.
+
 ## Canonical folder/file map (native host)
 
 - app host route: `splunk_app/<appId>/default/data/ui/nav/default.xml` (links app page)

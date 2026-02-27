@@ -70,6 +70,23 @@ Pass criteria:
 - At least one expected route path returns successful response for core endpoint.
 - Failure responses include attempted paths and structured error context.
 
+## 4c) Custom-controller feasibility gate (required for controller-native claims)
+
+Run both tests:
+
+1. control route test: verify known controller path resolves (for example `/custom/<appId>/apprestproxy/ping`)
+2. target route test: verify intended `/custom/<appId>/<controller>/...` route resolves
+
+Classification output (required):
+
+- `custom-controller available`
+- `custom-controller unavailable`
+
+Pass criteria:
+
+- Classification is explicitly recorded.
+- If classification is unavailable, architecture must pivot to `launcher-native-view` and report limitation.
+
 ## 4b) API-shape compliance gate (required)
 
 Verify first attempted path/method/payload uses canonical shape for each operation type:
@@ -137,7 +154,8 @@ Pass criteria:
 Record result as:
 
 - **PASS** or **FAIL** for each section (1-6)
-- host mode declaration: `Host Mode: dashboard-wrapper` or `Host Mode: native-app-page`
+- host mode declaration: `Host Mode: launcher-native-view` | `dashboard-wrapper` | `controller-native-surface`
+- native feasibility classification: `custom-controller available` | `custom-controller unavailable`
 - failing request/command details (if any)
 - suspected root cause file(s)
 - remediation patch summary
@@ -154,5 +172,5 @@ Failure record template (required when any check fails):
 
 Before publishing template or generated app changes:
 
-- Sections 1-5, 4b, and 5b must pass.
+- Sections 1-5, 4b, 4c, and 5b must pass.
 - Section 6 is strongly recommended when infrastructure access permits.
