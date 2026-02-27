@@ -122,7 +122,6 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/12-agent-source-routing-policy.md`
 - `docs/13-sdk-api-selection-matrix.md`
 - `docs/14-release-notes-2026-02-26.md`
-- `docs/15-new-workspace-agent-prompt-kpi-auto-layout.md`
 - `docs/16-native-app-page-pattern.md`
 - `docs/17-splunk-runtime-variance.md`
 - `docs/18-native-feasibility-check.md`

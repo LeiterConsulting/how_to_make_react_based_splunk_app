@@ -1,6 +1,6 @@
 # Native App Page Pattern (Architecture Choice)
 
-Use this guide when choosing between a dashboard XML host page and a native Splunk app page for React mounting.
+Use this guide when choosing between launcher-native-view and controller-native-surface patterns for React mounting.
 
 ## Route model (must be explicit)
 
@@ -24,12 +24,6 @@ Choose `launcher-native-view` when:
 - you want native app shell behavior without redirect shims,
 - you want a stable host view (`home.xml`) for React mounting.
 
-Choose `dashboard-wrapper` when:
-
-- you need quick compatibility with existing SimpleXML flow,
-- dashboard chrome behavior is acceptable or intentionally used,
-- host behavior parity with existing dashboard-based apps is required.
-
 Choose `controller-native-surface` when:
 
 - you need explicit `/custom/...` entry points for specialized pages,
@@ -52,21 +46,21 @@ Controller-native claims require feasibility classification from `docs/18-native
 
 ## 3-layer interplay (host mode independent)
 
-1. UI shell (dashboard-wrapper or native-app-page)
+1. UI shell (`launcher-native-view`)
 2. controller compatibility route (`app_rest_proxy` / `apprestproxy`)
 3. persistent REST handler (`restmap.conf`)
 
 Host mode changes where the UI mounts, not the backend route contract.
 
-## Migration checklist (dashboard -> launcher-native-view)
+## Migration checklist (legacy host -> launcher-native-view)
 
 1. Declare target host mode in handoff: `Host Mode: launcher-native-view`.
 2. Set `default/app.conf` -> `default_view = home`.
 3. Ensure `default/data/ui/nav/default.xml` uses `<view name="home" default="true"/>`.
 4. Ensure `default/data/ui/views/home.xml` exists and mounts React root directly.
-3. Keep backend routes unchanged unless explicitly required.
-4. Re-validate web exposure and auth/session behavior.
-5. Re-run package + smoke tests.
+5. Keep backend routes unchanged unless explicitly required.
+6. Re-validate web exposure and auth/session behavior.
+7. Re-run package + smoke tests.
 
 ## Smoke checks for native host mode
 

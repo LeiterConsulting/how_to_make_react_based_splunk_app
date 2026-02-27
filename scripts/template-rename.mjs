@@ -89,6 +89,15 @@ function ensureHomeView(activeAppDir, sourceAppId) {
   }
 }
 
+function removeLegacyAppIdView(activeAppDir, appId) {
+  const viewsDir = path.join(activeAppDir, 'default', 'data', 'ui', 'views')
+  const homeView = path.join(viewsDir, 'home.xml')
+  const legacyView = path.join(viewsDir, `${appId}.xml`)
+  if (fs.existsSync(homeView) && fs.existsSync(legacyView) && legacyView !== homeView) {
+    fs.unlinkSync(legacyView)
+  }
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2))
   const appId = (args.appId || '').trim()
@@ -146,6 +155,7 @@ function main() {
   const activeAppDir = appId === sourceAppId ? sourceAppDir : newAppDir
 
   ensureHomeView(activeAppDir, sourceAppId)
+  removeLegacyAppIdView(activeAppDir, appId)
 
   const homeViewFile = path.join(activeAppDir, 'default', 'data', 'ui', 'views', 'home.xml')
 

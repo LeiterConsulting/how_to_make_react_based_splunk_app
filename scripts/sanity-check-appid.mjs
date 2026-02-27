@@ -78,6 +78,7 @@ function main() {
   const webPath = path.join(appDir, 'default', 'web.conf')
   const defaultView = getDefaultViewFromAppConf(appConfPath)
   const defaultViewPath = path.join(viewsDir, `${defaultView || 'home'}.xml`)
+  const legacyViewPath = path.join(viewsDir, `${appId}.xml`)
 
   const checks = []
   const errors = []
@@ -141,6 +142,11 @@ function main() {
     if (/<search\b/i.test(launcherView)) {
       errors.push(`Launcher view does not include search stanzas: found <search> in ${relative(root, defaultViewPath)}`)
     }
+  }
+
+  checks.push('Legacy appId.xml host view is not present')
+  if (fs.existsSync(legacyViewPath) && legacyViewPath !== defaultViewPath) {
+    errors.push(`Legacy appId.xml host view is not present: remove ${relative(root, legacyViewPath)} and use home.xml launcher host`)
   }
 
   requireExactCapture(
