@@ -26,14 +26,14 @@ You are implementing a bespoke Splunk app using this repository bootstrap.
 
 Constraints:
 1) Use appId=<APP_ID> and appLabel=<APP_LABEL> as canonical identity.
-2) Use Splunk 10 controller-native baseline: app tile route must resolve to /app/<APP_ID>/home and redirect to /custom/<APP_ID>/app_page.
+2) Use Splunk 10 launcher-view baseline: app tile route must resolve to /app/<APP_ID>/home with a real home.xml host.
 3) Keep the 3-layer route model: React UI -> app_rest_proxy/apprestproxy -> persistent REST handler.
 4) Keep frontend fallback path strategy and include attempted paths in failures.
 5) Use existing scripts and docs in this repo, especially docs/19-splunk10-native-baseline.md, docs/18-native-feasibility-check.md, docs/12-agent-source-routing-policy.md, docs/13-sdk-api-selection-matrix.md, docs/07-agent-runbook.md, and docs/08-smoke-test.md.
 6) Follow docs/10-dashboard-chrome-controls.md for any chrome suppression/modification.
 7) Do not add unrelated features.
 8) For each major implementation decision, state selected API surface (JS SDK/Python SDK/Java SDK/Web Framework/raw REST) and why.
-9) Final runtime surface must be controller-native (`/custom/...`), not dashboard-wrapper.
+9) Only claim controller-native runtime when `/custom/...` feasibility is explicitly validated.
 
 Required execution sequence:
 - Run rename: npm run template:rename -- --appId <APP_ID> --appLabel "<APP_LABEL>"
@@ -49,7 +49,7 @@ Required execution sequence:
 Definition of done:
 - build/<APP_ID>.tar.gz is produced
 - sanity check passes
-- app tile launches to /app/<APP_ID>/home and redirects to /custom/<APP_ID>/app_page in Splunk test instance
+- app tile launches to /app/<APP_ID>/home in Splunk test instance
 - one successful UI -> backend roundtrip verified
 ```
 

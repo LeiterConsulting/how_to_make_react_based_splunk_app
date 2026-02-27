@@ -16,8 +16,9 @@ Use this matrix to select the correct implementation surface before coding.
 ## Decision heuristics
 
 - Prefer the **smallest surface** that satisfies the requirement.
+- Treat `/app/<appId>/<view>` host model as deterministic launcher baseline unless requirement explicitly needs custom route surface.
 - Keep Splunk auth/session handling on server-side boundaries where possible.
-- Use controller proxy as compatibility fallback, not the only route.
+- Use controller custom routes as optional/runtime-qualified surfaces, not default launch dependency.
 - For persistence and privileged actions, prefer backend endpoints over direct browser writes.
 - Use canonical first-attempt API shapes before runtime-specific fallbacks.
 

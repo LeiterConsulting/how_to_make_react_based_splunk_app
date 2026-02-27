@@ -34,7 +34,7 @@ This appendix captures common runtime deltas observed across Splunk environments
 
 - Symptom: host-shell behavior, chrome controls, and scroll behavior differ by host mode.
 - Guidance:
-  - declare host mode in every handoff (`launcher-bridge` or `controller-native-surface`),
+  - declare host mode in every handoff (`launcher-native-view` or `controller-native-surface`),
   - validate host-mode-specific smoke checks,
   - keep backend route contracts host-mode independent.
 

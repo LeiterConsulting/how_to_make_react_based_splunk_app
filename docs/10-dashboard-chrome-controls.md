@@ -4,7 +4,7 @@ Use this guide when an app requires hiding or modifying Splunk dashboard chrome 
 
 ## Default policy
 
-- Default bootstrap behavior is **suppress-actions** on launcher bridge/fallback views.
+- Default bootstrap behavior is **suppress-actions** on launcher/fallback views.
 - Agents should keep suppression enabled unless a user explicitly requests otherwise.
 - Changes must be **view-scoped** to the app view, not global across Splunk.
 

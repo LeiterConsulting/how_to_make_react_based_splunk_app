@@ -18,6 +18,7 @@ Output package:
 2. Restart Splunk.
 3. Launch app tile and verify route is `/app/<appId>/home`.
 4. Verify React root renders on launcher host (no redirect shim).
+5. If controller-native mode is requested, separately validate `/custom/<appId>/app_page` and record feasibility classification.
 
 ## Validation commands (server-side)
 

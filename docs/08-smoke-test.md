@@ -36,8 +36,7 @@ Pass criteria:
 
 - App appears in launcher with expected label.
 - Dashboard/view mounts without blank screen.
-- Launcher route resolves to bridge page (`/app/<appId>/home`).
-- Bridge redirects to controller-native route (`/custom/<appId>/app_page`).
+- Launcher route resolves to host page (`/app/<appId>/home`).
 - Host shell behavior is recorded as observed evidence (`dashboard-wrapper` or `non-wrapper`).
 - Launcher does not fall back to `/app/<appId>/alerts`.
 
@@ -48,12 +47,12 @@ Checks:
 - Verify whether `/app/<appId>/home/edit` exists.
 - Check for dashboard controls (`Edit`, `Export`, panel edit UI).
 - Check for dashboard custom-script warning banner.
-- Verify `/custom/<appId>/app_page` is reachable and mounts React root.
+- If native page is explicitly claimed, verify `/custom/<appId>/app_page` (or target custom route) is reachable and mounts React root.
 
 Pass criteria:
 
 - If any indicator is present, classify shell as `dashboard-wrapper` and mark native-page objective `FAIL`.
-- Only classify native-page objective `PASS` when `/custom/<appId>/app_page` is confirmed and dashboard-wrapper indicators are absent on runtime surface.
+- Only classify native-page objective `PASS` when custom-route runtime evidence is confirmed and dashboard-wrapper indicators are absent on claimed native surface.
 
 ## 3) Static asset health
 
@@ -170,10 +169,9 @@ Pass criteria:
 Record result as:
 
 - **PASS** or **FAIL** for each section (1-6)
-- host mode declaration: `Host Mode: launcher-bridge` | `controller-native-surface`
+- host mode declaration: `Host Mode: launcher-native-view` | `controller-native-surface`
 - shell evidence declaration: `Shell: dashboard-wrapper` | `non-wrapper`
 - native-page objective: `PASS` | `FAIL`
-- launcher bridge result: `redirected-to-controller` | `not-redirected`
 - native feasibility classification: `custom-controller available` | `custom-controller unavailable`
 - failing request/command details (if any)
 - suspected root cause file(s)

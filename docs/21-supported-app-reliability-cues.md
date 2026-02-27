@@ -6,7 +6,7 @@ This document records reliability cues observed from a vetted supported app and 
 
 1. **View-level chrome suppression for launcher/fallback views**
    - Cue: dashboard views in supported app set `hideEdit="true"` for operator-facing pages.
-   - Adoption: launcher bridge `home.xml` enforces `hideEdit="true"` by default.
+   - Adoption: launcher host `home.xml` enforces `hideEdit="true"` by default.
 
 2. **App-local metadata export scope**
    - Cue: supported app defaults object export to `none` and scopes sharing intentionally.
@@ -28,11 +28,15 @@ This document records reliability cues observed from a vetted supported app and 
 
 The following are enforced via `npm run sanity:appid`:
 
-- launcher bridge redirects to `/custom/<appId>/app_page`,
-- launcher bridge sets `hideEdit=true`,
+- launcher host mounts React root on `/app/<appId>/home`,
+- launcher host view sets `hideEdit=true`,
 - `app.manifest` exists and id matches appId,
 - metadata root export scope is `none`,
 - `distsearch.conf` exists and is appId-scoped.
+
+Optional guardrail:
+
+- when `app_page.py` exists, it must be appId-consistent and exposed in `web.conf`.
 
 ## Non-adopted cues (intentional)
 

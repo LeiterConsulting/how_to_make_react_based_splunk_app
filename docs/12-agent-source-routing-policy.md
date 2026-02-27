@@ -15,10 +15,15 @@ When an implementation agent makes architecture or API decisions, it must combin
 
 ## Primary official sources
 
+- Splunk Developer Guide (Develop apps): https://dev.splunk.com/enterprise/docs/developapps/
+- Splunk app extension points: https://dev.splunk.com/enterprise/docs/developapps/extensionpoints/
+- Splunk app visualization guidance: https://dev.splunk.com/enterprise/docs/developapps/visualizedata/
 - JavaScript SDK: https://docs.splunk.com/DocumentationStatic/JavaScriptSDK/1.11.0/index.html
 - Java SDK: https://docs.splunk.com/DocumentationStatic/JavaSDK/1.9.1/index.html
 - Python SDK: https://docs.splunk.com/DocumentationStatic/PythonSDK/2.1.1/index.html
 - Splunk Web Framework Component Reference: https://docs.splunk.com/DocumentationStatic/WebFramework/1.5/index.html
+
+Use Developer Guide pages as primary source for route-model and UI-host claims; use SDK references for API-client behavior.
 
 ## Required decision order (agents)
 

@@ -8,4 +8,5 @@
 - [ ] Add app-specific conf stanzas under `default/*.conf`
 - [ ] Build and package
 - [ ] Install tarball and restart Splunk
-- [ ] Validate controller ping and UI data flow
+- [ ] Validate launcher route/UI data flow
+- [ ] If controller-native is claimed, validate controller ping and record feasibility classification
