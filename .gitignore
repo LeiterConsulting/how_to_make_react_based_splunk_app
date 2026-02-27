@@ -16,6 +16,7 @@ dist-ssr
 docs/feedback/
 docs/local-dev/
 docs/15-new-workspace-agent-prompt-kpi-auto-layout.md
+chargeback_app_splunk_cloud/
 
 # Editor directories and files
 .vscode/*
