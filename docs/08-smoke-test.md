@@ -36,6 +36,8 @@ Pass criteria:
 
 - App appears in launcher with expected label.
 - Dashboard/view mounts without blank screen.
+- Launcher route resolves to intended host page (for launcher-native mode: `/app/<appId>/home`).
+- Launcher does not fall back to `/app/<appId>/alerts`.
 
 ## 3) Static asset health
 

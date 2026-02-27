@@ -44,6 +44,17 @@ Use this routing order for implementation agents:
 8. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
 9. `docs/06-agent-roadmap.md` (phase goals and release criteria)
 
+
+Feedback-loop waterfall (required on every test app cycle):
+
+1. Build and validate using `docs/07-agent-runbook.md` + `docs/08-smoke-test.md`.
+2. Record any runtime mismatch between expected and observed behavior.
+3. Write feedback artifacts to `docs/feedback/<test_app_id>/` using numbered files.
+4. Include one issue-ready upstream feedback file in that same folder.
+5. On subsequent agent runs, read `docs/feedback/<test_app_id>/` before implementing new changes.
+
+Feedback convention reference: `docs/feedback/README.md`
+
 ## Starter structure
 
 - `src/` — React UI and TS client
@@ -109,4 +120,7 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/15-new-workspace-agent-prompt-kpi-auto-layout.md`
 - `docs/16-native-app-page-pattern.md`
 - `docs/17-splunk-runtime-variance.md`
+
+- `docs/feedback/README.md`
+- `docs/feedback/index_kpi_autolab/README.md`
 

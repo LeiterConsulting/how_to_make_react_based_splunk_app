@@ -80,6 +80,15 @@ function ensureAppLogo(appDir) {
   }
 }
 
+function ensureHomeView(activeAppDir, sourceAppId) {
+  const viewsDir = path.join(activeAppDir, 'default', 'data', 'ui', 'views')
+  const homeView = path.join(viewsDir, 'home.xml')
+  const sourceView = path.join(viewsDir, `${sourceAppId}.xml`)
+  if (!fs.existsSync(homeView) && fs.existsSync(sourceView)) {
+    fs.renameSync(sourceView, homeView)
+  }
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2))
   const appId = (args.appId || '').trim()
@@ -136,15 +145,9 @@ function main() {
 
   const activeAppDir = appId === sourceAppId ? sourceAppDir : newAppDir
 
-  const oldViewFile = path.join(activeAppDir, 'default', 'data', 'ui', 'views', `${sourceAppId}.xml`)
-  const newViewFile = path.join(activeAppDir, 'default', 'data', 'ui', 'views', `${appId}.xml`)
+  ensureHomeView(activeAppDir, sourceAppId)
 
-  if (fs.existsSync(oldViewFile) && appId !== sourceAppId) {
-    if (fs.existsSync(newViewFile)) {
-      throw new Error(`Target view file already exists: ${newViewFile}`)
-    }
-    fs.renameSync(oldViewFile, newViewFile)
-  }
+  const homeViewFile = path.join(activeAppDir, 'default', 'data', 'ui', 'views', 'home.xml')
 
   const filesToPatch = [
     path.join(root, 'README.md'),
@@ -162,7 +165,7 @@ function main() {
     path.join(activeAppDir, 'default', 'authorize.conf'),
     path.join(activeAppDir, 'default', 'app_settings.conf'),
     path.join(activeAppDir, 'default', 'data', 'ui', 'nav', 'default.xml'),
-    fs.existsSync(newViewFile) ? newViewFile : oldViewFile,
+    homeViewFile,
   ]
 
   const replacements = [[sourceAppId, appId]]
@@ -172,7 +175,7 @@ function main() {
   }
 
   setAppConfLabel(path.join(activeAppDir, 'default', 'app.conf'), appLabel)
-  setViewLabel(fs.existsSync(newViewFile) ? newViewFile : oldViewFile, appLabel)
+  setViewLabel(homeViewFile, appLabel)
 
   ensureAppLogo(activeAppDir)
 

@@ -10,6 +10,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 - core endpoint set needed by UI
 - preferred UI variant (`minimal` or `rich`)
 - dashboard chrome policy (`default`, `suppress-actions`, or `custom`)
+- host mode (`launcher-native-view` | `dashboard-wrapper` | `controller-native-surface`)
 
 Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
 Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matrix.md` to choose official SDK/API surfaces before implementation.
@@ -67,12 +68,17 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
      - `apprestproxy/*`
    - Ensure app-scoped endpoint patterns used by UI are exposed and authenticated.
 
-7. **Build and package**
+7. **Validate host-mode contract**
+   - `launcher-native-view`: launcher route must resolve via `/app/<appId>/home` with real `home.xml` host.
+   - `controller-native-surface`: route lives under `/custom/<appId>/...` and must not be documented as launcher destination.
+   - `dashboard-wrapper`: document wrapper usage explicitly and avoid labeling it native-first.
+
+8. **Build and package**
    - `npm run build:splunk`
    - `npm run package:splunk`
    - Confirm output exists: `build/<appId>.tar.gz`
 
-8. **Install and runtime validate (Splunk test instance)**
+9. **Install and runtime validate (Splunk test instance)**
    - Install tarball in Splunk Apps UI.
    - Restart Splunk.
    - Open app dashboard and verify mount.
@@ -82,7 +88,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
 ## Required artifacts for handoff
 
 - Installable package: `build/<appId>.tar.gz`
-- Host mode declaration: `Host Mode: dashboard-wrapper` or `Host Mode: native-app-page` with rationale.
+- Host mode declaration with rationale: `launcher-native-view` | `dashboard-wrapper` | `controller-native-surface`.
 - Brief validation report containing:
   - build/package command outputs
   - route verification notes (or `btool` output)

@@ -39,6 +39,13 @@ function getAppLabelFromAppConf(appConfPath) {
   return match ? match[1].trim() : null
 }
 
+function getDefaultViewFromAppConf(appConfPath) {
+  if (!fs.existsSync(appConfPath)) return null
+  const content = readText(appConfPath)
+  const match = content.match(/^\s*default_view\s*=\s*(.+)$/m)
+  return match ? match[1].trim() : null
+}
+
 function relative(root, filePath) {
   return path.relative(root, filePath).split(path.sep).join('/')
 }
@@ -66,9 +73,11 @@ function main() {
   const appDir = path.join(splunkAppRoot, appId)
   const appConfPath = path.join(appDir, 'default', 'app.conf')
   const navPath = path.join(appDir, 'default', 'data', 'ui', 'nav', 'default.xml')
-  const viewPath = path.join(appDir, 'default', 'data', 'ui', 'views', `${appId}.xml`)
+  const viewsDir = path.join(appDir, 'default', 'data', 'ui', 'views')
   const restmapPath = path.join(appDir, 'default', 'restmap.conf')
   const webPath = path.join(appDir, 'default', 'web.conf')
+  const defaultView = getDefaultViewFromAppConf(appConfPath)
+  const defaultViewPath = path.join(viewsDir, `${defaultView || 'home'}.xml`)
 
   const checks = []
   const errors = []
@@ -112,17 +121,18 @@ function main() {
   }
 
   requirePath(appDir, 'App folder exists')
-  requirePath(viewPath, 'View file name matches appId')
+  requirePath(defaultViewPath, 'Configured launcher default view file exists')
   requirePath(path.join(appDir, 'static', 'appLogo.png'), 'App icon exists')
 
-  requireRegex(navPath, new RegExp(`<view\\s+name=["']${appId}["']`), 'Nav view name matches appId')
+  requireRegex(appConfPath, /^\s*default_view\s*=\s*home\s*$/m, 'app.conf default_view is home')
+  requireRegex(navPath, /<view\s+name=["']home["'][^>]*default=["']true["']/m, 'Nav default view is home')
   requireRegex(restmapPath, new RegExp(`match\\s*=\\s*/${appId}/app_api/`), 'restmap includes app-prefixed app_api routes')
   requireRegex(webPath, /pattern\s*=\s*app_rest_proxy\/\*/, 'web.conf exposes app_rest_proxy')
   requireRegex(webPath, /pattern\s*=\s*apprestproxy\/\*/, 'web.conf exposes apprestproxy')
   requireRegex(webPath, new RegExp(`pattern\\s*=\\s*${appId}/app_api/\\*\\*`), 'web.conf exposes app-scoped app_api routes')
 
-  requireRegex(viewPath, new RegExp(`stylesheet=["']${appId}\\.css["']`), 'View references appId CSS bundle')
-  requireRegex(viewPath, new RegExp(`script=["']${appId}\\.js["']`), 'View references appId JS bundle')
+  requireRegex(defaultViewPath, new RegExp(`stylesheet=["']${appId}\\.css["']`), 'Launcher view references appId CSS bundle')
+  requireRegex(defaultViewPath, new RegExp(`script=["']${appId}\\.js["']`), 'Launcher view references appId JS bundle')
 
   requireExactCapture(
     path.join(root, 'src', 'appClient.ts'),

@@ -2,7 +2,27 @@
 
 Use this guide when choosing between a dashboard XML host page and a native Splunk app page for React mounting.
 
+## Route model (must be explicit)
+
+- Launcher route space (tile-compatible): `/app/<appId>/<view>`
+- Controller route space (non-launcher): `/custom/<appId>/<controller>/...`
+
+These are not interchangeable.
+
+## Terminology
+
+- `launcher-native-view`: app tile opens a real view route (`/app/<appId>/home`) and React mounts in that host view.
+- `controller-native-surface`: controller-only page under `/custom/...`; usable via explicit links, not launcher tiles.
+
+Do not label dashboard redirect shims as `native-first`.
+
 ## Decision criteria
+
+Choose `launcher-native-view` when:
+
+- app tile launch reliability is required,
+- you want native app shell behavior without redirect shims,
+- you want a stable host view (`home.xml`) for React mounting.
 
 Choose `dashboard-wrapper` when:
 
@@ -10,11 +30,11 @@ Choose `dashboard-wrapper` when:
 - dashboard chrome behavior is acceptable or intentionally used,
 - host behavior parity with existing dashboard-based apps is required.
 
-Choose `native-app-page` when:
+Choose `controller-native-surface` when:
 
-- you need stricter control of full-page UX shell behavior,
-- you need cleaner host boundaries with fewer dashboard wrapper side effects,
-- you want architecture aligned to app-page-first frontend ownership.
+- you need explicit `/custom/...` entry points for specialized pages,
+- you do not require launcher tile to land directly on controller path,
+- you will provide explicit route links and documentation.
 
 ## Canonical folder/file map (native host)
 
@@ -36,10 +56,12 @@ Choose `native-app-page` when:
 
 Host mode changes where the UI mounts, not the backend route contract.
 
-## Migration checklist (dashboard -> native)
+## Migration checklist (dashboard -> launcher-native-view)
 
-1. Declare target host mode in handoff: `Host Mode: native-app-page`.
-2. Move React mount ownership to native page host while preserving asset names.
+1. Declare target host mode in handoff: `Host Mode: launcher-native-view`.
+2. Set `default/app.conf` -> `default_view = home`.
+3. Ensure `default/data/ui/nav/default.xml` uses `<view name="home" default="true"/>`.
+4. Ensure `default/data/ui/views/home.xml` exists and mounts React root directly.
 3. Keep backend routes unchanged unless explicitly required.
 4. Re-validate web exposure and auth/session behavior.
 5. Re-run package + smoke tests.
@@ -48,6 +70,7 @@ Host mode changes where the UI mounts, not the backend route contract.
 
 - app page route resolves with authenticated session.
 - React root mounts without dashboard wrapper regressions.
+- app tile does not fall back to `/app/<appId>/alerts`.
 - fallback API path behavior unchanged.
 - full-page shell behavior (`100dvh`, internal scroll) remains stable.
 - route/controller/persistent handler roundtrip succeeds.
