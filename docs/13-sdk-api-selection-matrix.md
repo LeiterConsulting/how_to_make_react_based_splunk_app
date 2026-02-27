@@ -19,6 +19,20 @@ Use this matrix to select the correct implementation surface before coding.
 - Keep Splunk auth/session handling on server-side boundaries where possible.
 - Use controller proxy as compatibility fallback, not the only route.
 - For persistence and privileged actions, prefer backend endpoints over direct browser writes.
+- Use canonical first-attempt API shapes before runtime-specific fallbacks.
+
+## Canonical first-attempt API shapes
+
+- Index enumeration:
+	- `GET /services/data/indexes?output_mode=json&count=0`
+- KV state persistence base path:
+	- `/servicesNS/nobody/<appId>/storage/collections/...`
+- JSON write transport order:
+	1. `postargs.__json`
+	2. `jsonargs`
+	3. raw JSON with explicit `Content-Type: application/json`
+
+No speculative endpoint shapes as first attempt. If a runtime-specific alternative is required, report why and include fail-fast diagnostics (`attempted_paths`, `attempted_transports`, `transport_errors`).
 
 ## Reliability guardrails by surface
 

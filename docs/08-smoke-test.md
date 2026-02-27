@@ -68,6 +68,20 @@ Pass criteria:
 - At least one expected route path returns successful response for core endpoint.
 - Failure responses include attempted paths and structured error context.
 
+## 4b) API-shape compliance gate (required)
+
+Verify first attempted path/method/payload uses canonical shape for each operation type:
+
+- index enumeration: `GET /services/data/indexes?output_mode=json&count=0`
+- KV state base path: `/servicesNS/nobody/<appId>/storage/collections/...`
+- JSON writes use canonical transport order (`postargs.__json` -> `jsonargs` -> raw JSON)
+
+Pass criteria:
+
+- First attempt matches canonical shape.
+- Any deviation includes documented runtime rationale and fail-fast diagnostics.
+- Round fails if first attempted path deviates without rationale.
+
 ## 5) Backend auth/capability behavior
 
 Checks:
@@ -121,6 +135,7 @@ Pass criteria:
 Record result as:
 
 - **PASS** or **FAIL** for each section (1-6)
+- host mode declaration: `Host Mode: dashboard-wrapper` or `Host Mode: native-app-page`
 - failing request/command details (if any)
 - suspected root cause file(s)
 - remediation patch summary
@@ -137,5 +152,5 @@ Failure record template (required when any check fails):
 
 Before publishing template or generated app changes:
 
-- Sections 1-5 and 5b must pass.
+- Sections 1-5, 4b, and 5b must pass.
 - Section 6 is strongly recommended when infrastructure access permits.

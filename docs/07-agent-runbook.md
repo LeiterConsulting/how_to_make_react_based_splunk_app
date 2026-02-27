@@ -13,6 +13,18 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 
 Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
 Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matrix.md` to choose official SDK/API surfaces before implementation.
+Use `docs/16-native-app-page-pattern.md` to declare host mode early, and `docs/17-splunk-runtime-variance.md` for runtime adaptation rules.
+
+## Canonical API shape requirements (first attempt)
+
+- Index enumeration: `GET /services/data/indexes?output_mode=json&count=0`
+- KV base path shape: `/servicesNS/nobody/<appId>/storage/collections/...`
+- JSON write transport order:
+   1. `postargs.__json`
+   2. `jsonargs`
+   3. raw JSON with explicit `Content-Type: application/json`
+
+No speculative endpoint/path shapes are allowed as first attempt. If runtime variance requires deviation, fail fast with structured diagnostics and include rationale.
 
 ## Standard execution sequence
 
@@ -42,6 +54,11 @@ Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matr
    - Replace logic in persistent REST handler under `splunk_app/<appId>/bin/*.py`.
    - Keep structured JSON error payloads and enable capability checks only when required by app domain.
    - Preserve session/auth extraction robustness.
+   - For rich variants, include a collapsed-by-default backend debug panel fed by standardized debug fields:
+     - `attempted_paths`
+     - `attempted_transports`
+     - `transport_errors`
+     - source summary (`sources`, `errors`, `count`)
 
 6. **Validate routing and exposure contracts**
    - Confirm endpoint matches in `default/restmap.conf`.
@@ -65,6 +82,7 @@ Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matr
 ## Required artifacts for handoff
 
 - Installable package: `build/<appId>.tar.gz`
+- Host mode declaration: `Host Mode: dashboard-wrapper` or `Host Mode: native-app-page` with rationale.
 - Brief validation report containing:
   - build/package command outputs
   - route verification notes (or `btool` output)
