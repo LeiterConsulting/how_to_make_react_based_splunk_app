@@ -32,6 +32,29 @@ function readText(filePath) {
   return fs.readFileSync(filePath, 'utf8')
 }
 
+function listMarkdownFiles(rootDir) {
+  const files = []
+  if (!fs.existsSync(rootDir)) return files
+
+  const stack = [rootDir]
+  while (stack.length > 0) {
+    const current = stack.pop()
+    const entries = fs.readdirSync(current, { withFileTypes: true })
+    for (const entry of entries) {
+      const fullPath = path.join(current, entry.name)
+      if (entry.isDirectory()) {
+        stack.push(fullPath)
+        continue
+      }
+      if (entry.isFile() && entry.name.toLowerCase().endsWith('.md')) {
+        files.push(fullPath)
+      }
+    }
+  }
+
+  return files
+}
+
 function getAppLabelFromAppConf(appConfPath) {
   if (!fs.existsSync(appConfPath)) return null
   const content = readText(appConfPath)
@@ -82,6 +105,18 @@ function main() {
 
   const checks = []
   const errors = []
+
+  function requireNoRegex(filePath, regex, requirement) {
+    checks.push(requirement)
+    if (!fs.existsSync(filePath)) {
+      errors.push(`${requirement}: missing ${relative(root, filePath)}`)
+      return
+    }
+    const content = readText(filePath)
+    if (regex.test(content)) {
+      errors.push(`${requirement}: forbidden pattern ${regex} found in ${relative(root, filePath)}`)
+    }
+  }
 
   function requirePath(filePath, requirement) {
     checks.push(requirement)
@@ -196,6 +231,29 @@ function main() {
       errors.push(`App label matches expected value: could not read label from ${relative(root, appConfPath)}`)
     } else if (actualLabel !== expectedLabel) {
       errors.push(`App label matches expected value: expected '${expectedLabel}' but found '${actualLabel}'`)
+    }
+  }
+
+  const docsRoot = path.join(root, 'docs')
+  const markdownFiles = [path.join(root, 'README.md'), ...listMarkdownFiles(docsRoot)]
+  const checkedDocs = markdownFiles.filter((filePath) => {
+    const rel = relative(root, filePath)
+    if (rel.startsWith('docs/feedback/')) return false
+    return true
+  })
+
+  const forbiddenLauncherShellClaimRegexes = [
+    /launcher[-\s](?:native[-\s]view|view)[^\n]{0,140}(?:guarantee|guarantees|guaranteed|ensure|ensures|ensured|imply|implies|implied|prove|proves|proven|means)[^\n]{0,140}(?:non[-\s]?wrapper|without dashboard chrome|no dashboard chrome)/i,
+    /\/app\/<appId>\/home[^\n]{0,140}(?:guarantee|guarantees|guaranteed|ensure|ensures|ensured|imply|implies|implied|prove|proves|proven|means)[^\n]{0,140}(?:non[-\s]?wrapper|without dashboard chrome|no dashboard chrome)/i,
+  ]
+
+  for (const filePath of checkedDocs) {
+    for (const regex of forbiddenLauncherShellClaimRegexes) {
+      requireNoRegex(
+        filePath,
+        regex,
+        'Docs do not claim launcher-view route guarantees non-wrapper shell behavior',
+      )
     }
   }
 
