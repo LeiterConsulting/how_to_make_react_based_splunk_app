@@ -182,7 +182,7 @@ function main() {
   requireRegex(defaultViewPath, new RegExp(`stylesheet=["']${appId}\\.css["']`), 'Launcher view references appId CSS bundle')
   requireRegex(defaultViewPath, new RegExp(`script=["']${appId}\\.js["']`), 'Launcher view references appId JS bundle')
   requireRegex(defaultViewPath, /id=["']splunk-react-app-root["']/, 'Launcher view contains React root mount')
-  requireRegex(defaultViewPath, /hideEdit=["']true["']/, 'Launcher bridge view sets hideEdit=true by default')
+  requireRegex(defaultViewPath, /hideEdit=["']true["']/, 'Launcher view sets hideEdit=true by default')
 
   if (fs.existsSync(appPageControllerPath)) {
     requireRegex(appPageControllerPath, new RegExp(`APP\\s*=\\s*'${appId}'`), 'app_page controller APP constant matches appId')
@@ -190,6 +190,12 @@ function main() {
     requireRegex(appPageControllerPath, /_static_asset\(f'\{APP\}\.js'\)/, 'app_page controller references appId JS bundle template')
     requireRegex(appPageControllerPath, /_static_asset\(f'\{APP\}\.css'\)/, 'app_page controller references appId CSS bundle template')
     requireRegex(webPath, /pattern\s*=\s*app_page\s*$/m, 'web.conf exposes app_page controller route when app_page exists')
+  } else {
+    checks.push('web.conf does not expose app_page when optional controller is absent')
+    const webContent = fs.existsSync(webPath) ? readText(webPath) : ''
+    if (/pattern\s*=\s*app_page\s*$/m.test(webContent)) {
+      errors.push('web.conf does not expose app_page when optional controller is absent: remove [expose:app_page] or add app_page.py intentionally')
+    }
   }
 
   checks.push('Launcher view does not include search stanzas')

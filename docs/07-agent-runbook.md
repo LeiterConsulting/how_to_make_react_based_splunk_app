@@ -18,6 +18,7 @@ Use `docs/16-native-app-page-pattern.md` to declare host mode early, `docs/18-na
 Use `docs/19-splunk10-native-baseline.md` as the required launcher-view architecture baseline.
 Use `docs/20-fact-evidence-standard.md` to classify guidance claims as documentation fact, runtime fact, or policy rule.
 Use `docs/21-supported-app-reliability-cues.md` to enforce adopted reliability defaults.
+Use `docs/23-controller-native-option.md` when (and only when) controller-native route delivery is explicitly requested.
 
 ## Canonical API shape requirements (first attempt)
 

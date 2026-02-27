@@ -29,6 +29,7 @@ Choose `controller-native-surface` when:
 - you will provide explicit route links and documentation.
 
 Controller-native claims require feasibility classification from `docs/18-native-feasibility-check.md`.
+Controller-native enablement is explicit opt-in only; see `docs/23-controller-native-option.md`.
 
 ## Canonical folder/file map (native host)
 

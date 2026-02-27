@@ -48,8 +48,9 @@ Use this routing order for implementation agents:
 10. `docs/10-dashboard-chrome-controls.md` (safe chrome suppression/modification policy)
 11. `docs/21-supported-app-reliability-cues.md` (adopted reliability lessons from vetted app review)
 12. `docs/22-instruction-audit-2026-02-27.md` (full instruction-set audit against Splunk docs/best practices)
-13. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
-14. `docs/06-agent-roadmap.md` (phase goals and release criteria)
+13. `docs/23-controller-native-option.md` (optional-only controller-native mode: purpose, use-cases, enablement)
+14. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
+15. `docs/06-agent-roadmap.md` (phase goals and release criteria)
 
 
 Feedback-loop waterfall (required on every test app cycle):
@@ -69,7 +70,6 @@ Feedback convention reference: `docs/feedback/README.md`
 - `splunk_app/splunk_react_app/bin/app_access.py` — persistent REST handler
 - `splunk_app/splunk_react_app/default/restmap.conf` — REST endpoint registrations
 - `splunk_app/splunk_react_app/default/web.conf` — Splunk Web exposure rules
-- `splunk_app/splunk_react_app/appserver/controllers/app_page.py` — optional controller-native app page surface
 - `splunk_app/splunk_react_app/appserver/controllers/app_rest_proxy.py` — custom controller proxy
 - `scripts/splunk-sync.mjs` — copies built JS/CSS to Splunk static path
 - `scripts/splunk-package.mjs` — creates install tarball
@@ -132,6 +132,7 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/20-fact-evidence-standard.md`
 - `docs/21-supported-app-reliability-cues.md`
 - `docs/22-instruction-audit-2026-02-27.md`
+- `docs/23-controller-native-option.md`
 
 - `docs/feedback/README.md`
 - `docs/feedback/index_kpi_autolab/README.md`
