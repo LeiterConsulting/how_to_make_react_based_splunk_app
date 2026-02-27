@@ -83,6 +83,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
      - `custom-controller available`
      - `custom-controller unavailable`
    - If unavailable, keep launcher-native-view baseline and declare limitation explicitly.
+   - If controller-native is not claimed in this round, mark controller checks as `not-tested`.
 
 9. **Build and package**
    - `npm run build:splunk`
@@ -101,6 +102,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
 - Installable package: `build/<appId>.tar.gz`
 - Host mode declaration with rationale: `launcher-native-view` | `controller-native-surface`.
 - Native feasibility classification: `custom-controller available` | `custom-controller unavailable`.
+- Native feasibility classification may be `not-tested` when controller-native is out of scope for the round.
 - Shell evidence declaration: `dashboard-wrapper` | `non-wrapper`.
 - Native-page objective verdict: `PASS` | `FAIL`.
 - Brief validation report containing:

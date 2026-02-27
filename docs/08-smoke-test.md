@@ -54,6 +54,19 @@ Pass criteria:
 - If any indicator is present, classify shell as `dashboard-wrapper` and mark native-page objective `FAIL`.
 - Only classify native-page objective `PASS` when custom-route runtime evidence is confirmed and dashboard-wrapper indicators are absent on claimed native surface.
 
+## 2c) Controller-native 404 remediation (optional; use only when tested)
+
+If `/custom/<appId>/app_page` returns `404`, run this remediation sequence:
+
+1. Verify route exposure in `default/web.conf` (`[expose:app_page]` and `pattern = app_page`).
+2. Verify controller file exists at `appserver/controllers/app_page.py` and appId tokens are correct.
+3. Verify package install/restart occurred after latest build.
+4. Capture `btool web` output and browser network details for the failed `/custom` call.
+5. Classify round as:
+  - launcher host status: `pass` (if `/app/<appId>/home` works),
+  - controller-native status: `fail (404)`,
+  - native-page objective: `FAIL`.
+
 ## 3) Static asset health
 
 Checks:
@@ -85,7 +98,7 @@ Pass criteria:
 - At least one expected route path returns successful response for core endpoint.
 - Failure responses include attempted paths and structured error context.
 
-## 4c) Custom-controller feasibility gate (required for controller-native claims)
+## 4c) Custom-controller feasibility gate (optional unless controller-native is claimed)
 
 Run both tests:
 
@@ -170,9 +183,14 @@ Record result as:
 
 - **PASS** or **FAIL** for each section (1-6)
 - host mode declaration: `Host Mode: launcher-native-view` | `controller-native-surface`
+- launcher host status: `pass` | `fail`
+- controller-native status: `pass` | `fail` | `not-tested`
 - shell evidence declaration: `Shell: dashboard-wrapper` | `non-wrapper`
 - native-page objective: `PASS` | `FAIL`
-- native feasibility classification: `custom-controller available` | `custom-controller unavailable`
+- native feasibility classification: `custom-controller available` | `custom-controller unavailable` | `not-tested`
+- evidence links:
+  - launcher route evidence (`/app/<appId>/home`)
+  - controller-native route evidence (`/custom/<appId>/app_page` or tested custom path, when tested)
 - failing request/command details (if any)
 - suspected root cause file(s)
 - remediation patch summary
@@ -189,5 +207,6 @@ Failure record template (required when any check fails):
 
 Before publishing template or generated app changes:
 
-- Sections 1-5, 4b, 4c, and 5b must pass.
+- Sections 1-5, 4b, and 5b must pass.
+- Section 4c is required only when controller-native route claims are made.
 - Section 6 is strongly recommended when infrastructure access permits.
