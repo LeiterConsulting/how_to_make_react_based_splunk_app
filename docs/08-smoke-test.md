@@ -81,6 +81,22 @@ Pass criteria:
 
 - No unresolved 404 for primary app assets.
 
+## 3b) Contrast/readability gate (required)
+
+Checks:
+
+- Validate text contrast on launcher host view (`/app/<appId>/home`) for:
+  - primary text on app background/surface
+  - secondary/help text on surface
+  - interactive/focus state visibility (keyboard focus ring)
+- Use browser accessibility tooling (for example Lighthouse or Accessibility Insights) to scan color contrast violations.
+
+Pass criteria:
+
+- No critical contrast violations on starter shell view.
+- Body/help text remains readable without zoom changes in default dark theme.
+- Keyboard focus indicator is clearly visible on interactive controls.
+
 ## 4) Route and proxy health
 
 Validate endpoint behavior via UI action or direct call path checks.
@@ -207,6 +223,6 @@ Failure record template (required when any check fails):
 
 Before publishing template or generated app changes:
 
-- Sections 1-5, 4b, and 5b must pass.
+- Sections 1-5, 3b, 4b, and 5b must pass.
 - Section 4c is required only when controller-native route claims are made.
 - Section 6 is strongly recommended when infrastructure access permits.

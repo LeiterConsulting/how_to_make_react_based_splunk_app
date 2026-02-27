@@ -108,6 +108,7 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - Keep a custom controller proxy available when `splunkd/__raw/services*` behavior is inconsistent.
 - Use robust session-key extraction (`session.authtoken`, header variants).
 - Separate capability checks from route registration diagnosis.
+- Keep starter UI contrast-safe (high-contrast text + visible focus states) and validate in smoke rounds.
 
 ## Documentation
 

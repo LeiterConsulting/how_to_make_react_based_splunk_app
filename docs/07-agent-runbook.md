@@ -119,6 +119,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
 - **Routing gate:** configured endpoints resolve for expected path variants.
 - **Auth gate:** unauthorized/capability failures return structured JSON + status.
 - **Asset gate:** no unresolved static 404 for app icon or app bundles.
+- **Contrast gate:** launcher host view passes contrast/readability checks with visible keyboard focus states.
 
 ## Failure handling protocol
 
