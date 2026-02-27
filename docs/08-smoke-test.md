@@ -154,7 +154,7 @@ Pass criteria:
 Record result as:
 
 - **PASS** or **FAIL** for each section (1-6)
-- host mode declaration: `Host Mode: launcher-native-view` | `dashboard-wrapper` | `controller-native-surface`
+- host mode declaration: `Host Mode: launcher-native-view` | `controller-native-surface`
 - native feasibility classification: `custom-controller available` | `custom-controller unavailable`
 - failing request/command details (if any)
 - suspected root cause file(s)

@@ -9,6 +9,8 @@ This repository is a drop-in starter for building rich Splunk apps with:
 
 It is based on proven patterns used in production-style apps and iterative Splunk app hardening cycles.
 
+Primary target: Splunk 10.x with launcher-native app delivery as the default architecture.
+
 ## What you get
 
 - A working end-to-end vertical slice (UI → controller proxy → splunkd REST handler)
@@ -37,13 +39,14 @@ Use this routing order for implementation agents:
 1. `docs/09-agent-test-round.md` (test-round prompt + execution flow)
 2. `docs/12-agent-source-routing-policy.md` (official-doc routing and decision policy)
 3. `docs/16-native-app-page-pattern.md` (host architecture choice and migration guidance)
-4. `docs/18-native-feasibility-check.md` (runtime classification for controller-native viability)
-5. `docs/13-sdk-api-selection-matrix.md` (SDK/API surface selection rules)
-6. `docs/07-agent-runbook.md` (required build/package sequence)
-7. `docs/08-smoke-test.md` (validation and pass/fail criteria)
-8. `docs/10-dashboard-chrome-controls.md` (safe chrome suppression/modification policy)
-9. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
-10. `docs/06-agent-roadmap.md` (phase goals and release criteria)
+4. `docs/19-splunk10-native-baseline.md` (required Splunk 10 native baseline contract)
+5. `docs/18-native-feasibility-check.md` (runtime classification for controller-native viability)
+6. `docs/13-sdk-api-selection-matrix.md` (SDK/API surface selection rules)
+7. `docs/07-agent-runbook.md` (required build/package sequence)
+8. `docs/08-smoke-test.md` (validation and pass/fail criteria)
+9. `docs/10-dashboard-chrome-controls.md` (safe chrome suppression/modification policy)
+10. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
+11. `docs/06-agent-roadmap.md` (phase goals and release criteria)
 
 
 Feedback-loop waterfall (required on every test app cycle):
@@ -122,6 +125,7 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/16-native-app-page-pattern.md`
 - `docs/17-splunk-runtime-variance.md`
 - `docs/18-native-feasibility-check.md`
+- `docs/19-splunk10-native-baseline.md`
 
 - `docs/feedback/README.md`
 - `docs/feedback/index_kpi_autolab/README.md`

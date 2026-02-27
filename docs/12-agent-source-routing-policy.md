@@ -3,6 +3,8 @@
 This repository is a **directional control plane** for agentic Splunk app builds.
 It is not intended to duplicate upstream SDK/API documentation.
 
+Platform baseline: Splunk 10.x.
+
 ## Purpose
 
 When an implementation agent makes architecture or API decisions, it must combine:
@@ -37,6 +39,8 @@ When an implementation agent makes architecture or API decisions, it must combin
 - Do not treat this repo docs as replacing SDK references.
 - Do not introduce global Splunk UI behavior changes when view-scoped patterns exist.
 - Do not bypass validation gates before handoff.
+- Do not claim controller-native architecture unless feasibility classification is recorded.
+- Do not present dashboard-wrapper redirects as native delivery.
 
 ## Evidence requirement in agent outputs
 

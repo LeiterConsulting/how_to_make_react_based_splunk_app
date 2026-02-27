@@ -10,11 +10,12 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 - core endpoint set needed by UI
 - preferred UI variant (`minimal` or `rich`)
 - dashboard chrome policy (`default`, `suppress-actions`, or `custom`)
-- host mode (`launcher-native-view` | `dashboard-wrapper` | `controller-native-surface`)
+- host mode (`launcher-native-view` default | `controller-native-surface` optional)
 
 Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
 Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matrix.md` to choose official SDK/API surfaces before implementation.
 Use `docs/16-native-app-page-pattern.md` to declare host mode early, `docs/18-native-feasibility-check.md` for runtime classification, and `docs/17-splunk-runtime-variance.md` for runtime adaptation rules.
+Use `docs/19-splunk10-native-baseline.md` as the required architecture baseline.
 
 ## Canonical API shape requirements (first attempt)
 
@@ -71,7 +72,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
 7. **Validate host-mode contract**
    - `launcher-native-view`: launcher route must resolve via `/app/<appId>/home` with real `home.xml` host.
    - `controller-native-surface`: route lives under `/custom/<appId>/...` and must not be documented as launcher destination.
-   - `dashboard-wrapper`: document wrapper usage explicitly and avoid labeling it native-first.
+   - `dashboard-wrapper`: not an allowed default architecture for this repo's Splunk 10 baseline.
 
 8. **Run native feasibility classification (required for controller-native claims)**
    - Execute control route test and target route test per `docs/18-native-feasibility-check.md`.

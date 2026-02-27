@@ -133,6 +133,15 @@ function main() {
 
   requireRegex(defaultViewPath, new RegExp(`stylesheet=["']${appId}\\.css["']`), 'Launcher view references appId CSS bundle')
   requireRegex(defaultViewPath, new RegExp(`script=["']${appId}\\.js["']`), 'Launcher view references appId JS bundle')
+  requireRegex(defaultViewPath, /id=["']splunk-react-app-root["']/, 'Launcher view contains React root mount')
+
+  checks.push('Launcher view does not include search stanzas')
+  if (fs.existsSync(defaultViewPath)) {
+    const launcherView = readText(defaultViewPath)
+    if (/<search\b/i.test(launcherView)) {
+      errors.push(`Launcher view does not include search stanzas: found <search> in ${relative(root, defaultViewPath)}`)
+    }
+  }
 
   requireExactCapture(
     path.join(root, 'src', 'appClient.ts'),
