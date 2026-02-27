@@ -171,6 +171,7 @@ function main() {
   requireRegex(webPath, new RegExp(`pattern\\s*=\\s*${appId}/app_api/\\*\\*`), 'web.conf exposes app-scoped app_api routes')
 
   requireRegex(defaultViewPath, new RegExp(`/custom/${appId}/app_page`), 'Launcher view redirects to controller-native app_page route')
+  requireRegex(defaultViewPath, /hideEdit=["']true["']/, 'Launcher bridge view sets hideEdit=true by default')
 
   requireRegex(appPageControllerPath, new RegExp(`APP\\s*=\\s*'${appId}'`), 'app_page controller APP constant matches appId')
   requireRegex(appPageControllerPath, /id="splunk-react-app-root"/, 'app_page controller serves React root mount')

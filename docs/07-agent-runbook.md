@@ -9,7 +9,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 - target backend capability requirement(s), if needed
 - core endpoint set needed by UI
 - preferred UI variant (`minimal` or `rich`)
-- dashboard chrome policy (`default`, `suppress-actions`, or `custom`)
+- dashboard chrome policy (`suppress-actions` default, `default`, or `custom`)
 - host mode (`controller-native-surface` required baseline with launcher bridge)
 
 Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
@@ -49,9 +49,10 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
    - Minimal first for fast route bring-up: `npm run variant:minimal`
    - Use rich variant when feature surface requires it: `npm run variant:rich`
 
-4. **Apply chrome policy (if requested)**
+4. **Apply chrome policy (required default)**
    - Follow `docs/10-dashboard-chrome-controls.md`.
    - Keep suppression/modification scoped to requested view only.
+   - Maintain `hideEdit=true` on launcher bridge/fallback views unless explicitly overridden.
 
 5. **Implement backend domain logic**
    - Replace logic in persistent REST handler under `splunk_app/<appId>/bin/*.py`.

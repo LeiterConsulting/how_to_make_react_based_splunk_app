@@ -4,9 +4,15 @@ Use this guide when an app requires hiding or modifying Splunk dashboard chrome 
 
 ## Default policy
 
-- Default bootstrap behavior is **no suppression**.
-- Agents should modify chrome only when the user explicitly requests it.
+- Default bootstrap behavior is **suppress-actions** on launcher bridge/fallback views.
+- Agents should keep suppression enabled unless a user explicitly requests otherwise.
 - Changes must be **view-scoped** to the app view, not global across Splunk.
+
+Supported-app lessons adopted:
+
+- prefer XML-level view controls first (`hideEdit="true"` for bridge/fallback views),
+- keep any JS/CSS behavior app-local and view-scoped,
+- do not rely on global DOM hacks across Splunk pages.
 
 ## Allowed vs not allowed
 
@@ -56,7 +62,7 @@ Notes:
 
 When launching an implementation agent, include a chrome policy statement:
 
-- `chromePolicy`: `default` | `suppress-actions` | `custom`
+- `chromePolicy`: `suppress-actions` (default) | `default` | `custom`
 - `chromeTargets`: list of elements allowed to hide/modify
 
 Example:
