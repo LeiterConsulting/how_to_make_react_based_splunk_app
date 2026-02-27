@@ -6,6 +6,8 @@ This roadmap operationalizes `docs/feedback/BOOTSTRAP_UPDATE_CHECKLIST.md` into 
 
 Enable an agent to go from "new app intent" to "installable Splunk package" with predictable outcomes, low manual intervention, and clear failure diagnostics.
 
+Baseline focus: Splunk 10 launcher-native delivery (`/app/<appId>/home`) with deterministic packaging and runtime validation.
+
 ## Migration note (2026-02)
 
 This template originally started from a terminal-focused app skeleton in another workspace. It has been normalized to generic starter naming so generated apps are domain-agnostic by default.
@@ -20,7 +22,7 @@ Use this mapping when reviewing older notes, logs, or past agent output.
 
 - **Packaging reliability:** 95%+ of generated apps produce `build/<appId>.tar.gz` on first run.
 - **Install readiness:** 100% of generated packages pass static asset and route validation checks before install.
-- **Runtime readiness:** 90%+ of generated apps mount dashboard and complete one backend roundtrip in a clean Splunk test instance.
+- **Runtime readiness:** 90%+ of generated apps launch via `/app/<appId>/home` and complete one backend roundtrip in a clean Splunk test instance.
 - **Identity consistency:** 100% appId consistency across all known required files via automated sanity check.
 - **Actionable failures:** 100% of route/fetch failures include attempted paths and normalized error payloads.
 

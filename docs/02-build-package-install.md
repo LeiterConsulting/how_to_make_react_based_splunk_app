@@ -16,7 +16,8 @@ Output package:
 
 1. Upload/install tarball in Splunk Apps UI.
 2. Restart Splunk.
-3. Open app view and verify panel loads.
+3. Launch app tile and verify route is `/app/<appId>/home`.
+4. Verify React root renders on launcher host (no redirect shim).
 
 ## Validation commands (server-side)
 
