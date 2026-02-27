@@ -18,6 +18,7 @@ Verify that an agent can use this bootstrap to produce a bespoke app package wit
 - UI variant (`minimal` or `rich`):
 - chromePolicy (`default` | `suppress-actions` | `custom`):
 - chromeTargets (if non-default):
+- deployment shape (`standalone` | `distributed` | `search-head-cluster`):
 
 ## Agent prompt (copy/paste)
 
@@ -69,6 +70,7 @@ Definition of done:
 - **Agent/model:**
 - **PASS/FAIL:**
 - **Package output:**
+- **Deployment shape:**
 - **Smoke test sections passed (1-6):**
 - **Primary failure (if any):**
 - **Root cause file(s):**

@@ -47,7 +47,7 @@ Immediate triage:
 
 1. Verify `default/app.conf` contains `default_view = home`.
 2. Verify `default/data/ui/nav/default.xml` includes `<view name="home" default="true"/>`.
-3. Verify `default/data/ui/views/home.xml` exists and redirects to `/custom/<appId>/app_page`.
+3. Verify `default/data/ui/views/home.xml` exists and directly mounts the React root host.
 4. Re-run `npm run sanity:appid` and smoke checks before runtime retest.
 
 Classification requirement:

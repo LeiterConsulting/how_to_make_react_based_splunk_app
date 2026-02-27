@@ -11,6 +11,7 @@ This runbook defines the exact sequence an agent should execute to turn a new ap
 - preferred UI variant (`minimal` or `rich`)
 - dashboard chrome policy (`suppress-actions` default, `default`, or `custom`)
 - host mode (`launcher-native-view` default | `controller-native-surface` optional)
+- deployment shape under test (`standalone` | `distributed` | `search-head-cluster`)
 
 Use `docs/11-feedback-closure-roadmap.md` as the checklist-closure target when prioritizing implementation gaps.
 Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matrix.md` to choose official SDK/API surfaces before implementation.
@@ -102,6 +103,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
 
 - Installable package: `build/<appId>.tar.gz`
 - Host mode declaration with rationale: `launcher-native-view` | `controller-native-surface`.
+- Deployment shape declaration: `standalone` | `distributed` | `search-head-cluster`.
 - Native feasibility classification: `custom-controller available` | `custom-controller unavailable`.
 - Native feasibility classification may be `not-tested` when controller-native is out of scope for the round.
 - Shell evidence declaration: `dashboard-wrapper` | `non-wrapper`.

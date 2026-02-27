@@ -15,7 +15,7 @@
       }
     ],
     "releaseDate": null,
-    "description": "React + Vite starter app with persistent REST and controller-native page baseline.",
+    "description": "React + Vite starter app with launcher-native baseline, persistent REST, and optional controller-native route.",
     "classification": {
       "intendedAudience": null,
       "categories": [],

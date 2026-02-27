@@ -193,6 +193,23 @@ Pass criteria:
 
 - Expected restmap and web exposure entries appear.
 
+## 6b) Deployment-shape coverage gate (required for stress cycles)
+
+Checks:
+
+- Record deployment shape for the round: `standalone` | `distributed` | `search-head-cluster`.
+- Verify `app.manifest` declares baseline supported deployments:
+  - `_standalone`
+  - `_distributed`
+  - `_search_head_clustering`
+- For distributed/SHC rounds, capture one bundle-hygiene evidence point (for example `distsearch.conf` replication blacklist present in app package).
+
+Pass criteria:
+
+- Deployment shape is explicitly declared in the result.
+- Manifest deployment targets are present and appId-consistent.
+- Distributed/SHC rounds include one replication-hygiene evidence item.
+
 ## Result format (recommended)
 
 Record result as:
@@ -201,6 +218,7 @@ Record result as:
 - host mode declaration: `Host Mode: launcher-native-view` | `controller-native-surface`
 - launcher host status: `pass` | `fail`
 - controller-native status: `pass` | `fail` | `not-tested`
+- deployment shape: `standalone` | `distributed` | `search-head-cluster`
 - shell evidence declaration: `Shell: dashboard-wrapper` | `non-wrapper`
 - native-page objective: `PASS` | `FAIL`
 - native feasibility classification: `custom-controller available` | `custom-controller unavailable` | `not-tested`
@@ -224,5 +242,6 @@ Failure record template (required when any check fails):
 Before publishing template or generated app changes:
 
 - Sections 1-5, 3b, 4b, and 5b must pass.
+- Section 6b is required for stress cycles and release-candidate rounds.
 - Section 4c is required only when controller-native route claims are made.
 - Section 6 is strongly recommended when infrastructure access permits.

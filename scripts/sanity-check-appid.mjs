@@ -32,6 +32,10 @@ function readText(filePath) {
   return fs.readFileSync(filePath, 'utf8')
 }
 
+function readJson(filePath) {
+  return JSON.parse(readText(filePath))
+}
+
 function listMarkdownFiles(rootDir) {
   const files = []
   if (!fs.existsSync(rootDir)) return files
@@ -109,6 +113,7 @@ function main() {
 
   const checks = []
   const errors = []
+  let appManifestJson = null
 
   function requireNoRegex(filePath, regex, requirement) {
     checks.push(requirement)
@@ -178,6 +183,39 @@ function main() {
   requireRegex(webPath, new RegExp(`pattern\\s*=\\s*${appId}/app_api/\\*\\*`), 'web.conf exposes app-scoped app_api routes')
   requireRegex(distsearchPath, new RegExp(`\.\.\.${appId}/lookups/`), 'distsearch blacklist is appId-scoped for lookups')
   requireRegex(distsearchPath, new RegExp(`\.\.\.${appId}/bin\.\.\.`), 'distsearch blacklist is appId-scoped for bin path')
+
+  checks.push('app.manifest is valid JSON')
+  if (fs.existsSync(appManifestPath)) {
+    try {
+      appManifestJson = readJson(appManifestPath)
+    } catch (error) {
+      errors.push(`app.manifest is valid JSON: parse failed for ${relative(root, appManifestPath)} (${error.message})`)
+    }
+  }
+
+  checks.push('app.manifest includes supportedDeployments standalone/distributed/SHC')
+  if (appManifestJson) {
+    const supportedDeployments = appManifestJson.supportedDeployments
+    const requiredDeployments = ['_standalone', '_distributed', '_search_head_clustering']
+
+    if (!Array.isArray(supportedDeployments)) {
+      errors.push('app.manifest includes supportedDeployments standalone/distributed/SHC: supportedDeployments must be an array')
+    } else {
+      for (const deployment of requiredDeployments) {
+        if (!supportedDeployments.includes(deployment)) {
+          errors.push(`app.manifest includes supportedDeployments standalone/distributed/SHC: missing '${deployment}'`)
+        }
+      }
+    }
+  }
+
+  checks.push('app.manifest targetWorkloads includes _search_heads')
+  if (appManifestJson) {
+    const targetWorkloads = appManifestJson.targetWorkloads
+    if (!Array.isArray(targetWorkloads) || !targetWorkloads.includes('_search_heads')) {
+      errors.push('app.manifest targetWorkloads includes _search_heads: targetWorkloads must include _search_heads')
+    }
+  }
 
   requireRegex(defaultViewPath, new RegExp(`stylesheet=["']${appId}\\.css["']`), 'Launcher view references appId CSS bundle')
   requireRegex(defaultViewPath, new RegExp(`script=["']${appId}\\.js["']`), 'Launcher view references appId JS bundle')
