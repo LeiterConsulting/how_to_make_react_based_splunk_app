@@ -100,6 +100,7 @@ No speculative endpoint/path shapes are allowed as first attempt. If runtime var
 - Host mode declaration with rationale: `launcher-native-view` | `controller-native-surface`.
 - Native feasibility classification: `custom-controller available` | `custom-controller unavailable`.
 - Shell evidence declaration: `dashboard-wrapper` | `non-wrapper`.
+- Native-page objective verdict: `PASS` | `FAIL`.
 - Brief validation report containing:
   - build/package command outputs
   - route verification notes (or `btool` output)

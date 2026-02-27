@@ -6,7 +6,7 @@ This document defines the required base architecture for this repository going f
 
 - Target platform: Splunk Enterprise 10.x
 - 9.x compatibility is not a goal for this baseline.
-- Deliverable goal: installable, repeatable app packages that launch into an app-owned React shell.
+- Deliverable goal: installable, repeatable app packages that launch into an app-owned React host view.
 
 ## Baseline definition (for this repo)
 
@@ -19,6 +19,8 @@ Deterministic baseline means:
 
 This baseline does **not** claim a controller-native launch surface.
 This baseline also does **not** claim dashboard chrome absence; host-shell behavior is runtime-dependent and must be recorded as observed evidence.
+
+Expected default for this baseline in Splunk Web launcher flows is often `dashboard-wrapper`.
 
 ## Deterministic architecture contract
 
@@ -54,6 +56,10 @@ Required host evidence for every run:
 - observed launch URL
 - observed host mode (`launcher-native-view` or `controller-native-surface`)
 - observed shell behavior (`dashboard-wrapper` or `non-wrapper`)
+
+Native-page objective classification rule:
+
+- If dashboard indicators are present (for example `/home/edit`, `Edit`, `Export`, panel-edit controls, or dashboard custom-script warning), classify result as `dashboard-wrapper` and mark native-page objective as `not satisfied`.
 
 ## Required acceptance gates
 

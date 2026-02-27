@@ -40,6 +40,19 @@ Pass criteria:
 - Host shell behavior is recorded as observed evidence (`dashboard-wrapper` or `non-wrapper`).
 - Launcher does not fall back to `/app/<appId>/alerts`.
 
+## 2b) Native-page objective gate (required when native page is claimed)
+
+Checks:
+
+- Verify whether `/app/<appId>/home/edit` exists.
+- Check for dashboard controls (`Edit`, `Export`, panel edit UI).
+- Check for dashboard custom-script warning banner.
+
+Pass criteria:
+
+- If any indicator is present, classify shell as `dashboard-wrapper` and mark native-page objective `FAIL`.
+- Only classify native-page objective `PASS` when dashboard-wrapper indicators are absent and evidence is captured.
+
 ## 3) Static asset health
 
 Checks:
@@ -157,6 +170,7 @@ Record result as:
 - **PASS** or **FAIL** for each section (1-6)
 - host mode declaration: `Host Mode: launcher-native-view` | `controller-native-surface`
 - shell evidence declaration: `Shell: dashboard-wrapper` | `non-wrapper`
+- native-page objective: `PASS` | `FAIL`
 - native feasibility classification: `custom-controller available` | `custom-controller unavailable`
 - failing request/command details (if any)
 - suspected root cause file(s)
