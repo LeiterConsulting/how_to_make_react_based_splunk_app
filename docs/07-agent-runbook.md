@@ -17,6 +17,7 @@ Use `docs/12-agent-source-routing-policy.md` and `docs/13-sdk-api-selection-matr
 Use `docs/16-native-app-page-pattern.md` to declare host mode early, `docs/18-native-feasibility-check.md` for runtime classification, and `docs/17-splunk-runtime-variance.md` for runtime adaptation rules.
 Use `docs/19-splunk10-native-baseline.md` as the required controller-native architecture baseline.
 Use `docs/20-fact-evidence-standard.md` to classify guidance claims as documentation fact, runtime fact, or policy rule.
+Use `docs/21-supported-app-reliability-cues.md` to enforce adopted reliability defaults.
 
 ## Canonical API shape requirements (first attempt)
 

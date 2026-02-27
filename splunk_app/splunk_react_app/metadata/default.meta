@@ -1,6 +1,6 @@
 []
 access = read : [ * ], write : [ admin ]
-export = system
+export = none
 
 [collections/app_user_prefs]
 access = read : [ * ], write : [ admin ]

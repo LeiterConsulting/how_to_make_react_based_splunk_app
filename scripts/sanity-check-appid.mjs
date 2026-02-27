@@ -95,8 +95,11 @@ function main() {
 
   const appDir = path.join(splunkAppRoot, appId)
   const appConfPath = path.join(appDir, 'default', 'app.conf')
+  const appManifestPath = path.join(appDir, 'app.manifest')
+  const metaPath = path.join(appDir, 'metadata', 'default.meta')
   const navPath = path.join(appDir, 'default', 'data', 'ui', 'nav', 'default.xml')
   const viewsDir = path.join(appDir, 'default', 'data', 'ui', 'views')
+  const distsearchPath = path.join(appDir, 'default', 'distsearch.conf')
   const restmapPath = path.join(appDir, 'default', 'restmap.conf')
   const webPath = path.join(appDir, 'default', 'web.conf')
   const appPageControllerPath = path.join(appDir, 'appserver', 'controllers', 'app_page.py')
@@ -158,17 +161,25 @@ function main() {
   }
 
   requirePath(appDir, 'App folder exists')
+  requirePath(appManifestPath, 'App manifest exists')
   requirePath(defaultViewPath, 'Configured launcher default view file exists')
   requirePath(path.join(appDir, 'static', 'appLogo.png'), 'App icon exists')
   requirePath(appPageControllerPath, 'Controller-native app page controller exists')
+  requirePath(distsearchPath, 'distsearch.conf exists for bundle replication hygiene')
 
   requireRegex(appConfPath, /^\s*default_view\s*=\s*home\s*$/m, 'app.conf default_view is home')
+  requireRegex(appConfPath, /^\s*show_in_nav\s*=\s*true\s*$/m, 'app.conf show_in_nav is true')
+  requireRegex(appConfPath, /^\s*supported_themes\s*=\s*light,dark\s*$/m, 'app.conf supported themes are explicit')
+  requireRegex(metaPath, /^\s*export\s*=\s*none\s*$/m, 'default.meta root export scope is none')
+  requireRegex(appManifestPath, new RegExp(`"name"\\s*:\\s*"${appId}"`), 'app.manifest id.name matches appId')
   requireRegex(navPath, /<view\s+name=["']home["'][^>]*default=["']true["']/m, 'Nav default view is home')
   requireRegex(restmapPath, new RegExp(`match\\s*=\\s*/${appId}/app_api/`), 'restmap includes app-prefixed app_api routes')
   requireRegex(webPath, /pattern\s*=\s*app_rest_proxy\/\*/, 'web.conf exposes app_rest_proxy')
   requireRegex(webPath, /pattern\s*=\s*apprestproxy\/\*/, 'web.conf exposes apprestproxy')
   requireRegex(webPath, /pattern\s*=\s*app_page\s*$/m, 'web.conf exposes app_page controller route')
   requireRegex(webPath, new RegExp(`pattern\\s*=\\s*${appId}/app_api/\\*\\*`), 'web.conf exposes app-scoped app_api routes')
+  requireRegex(distsearchPath, new RegExp(`\.\.\.${appId}/lookups/`), 'distsearch blacklist is appId-scoped for lookups')
+  requireRegex(distsearchPath, new RegExp(`\.\.\.${appId}/bin\.\.\.`), 'distsearch blacklist is appId-scoped for bin path')
 
   requireRegex(defaultViewPath, new RegExp(`/custom/${appId}/app_page`), 'Launcher view redirects to controller-native app_page route')
   requireRegex(defaultViewPath, /hideEdit=["']true["']/, 'Launcher bridge view sets hideEdit=true by default')

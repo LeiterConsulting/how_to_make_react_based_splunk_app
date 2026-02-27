@@ -46,8 +46,9 @@ Use this routing order for implementation agents:
 8. `docs/07-agent-runbook.md` (required build/package sequence)
 9. `docs/08-smoke-test.md` (validation and pass/fail criteria)
 10. `docs/10-dashboard-chrome-controls.md` (safe chrome suppression/modification policy)
-11. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
-12. `docs/06-agent-roadmap.md` (phase goals and release criteria)
+11. `docs/21-supported-app-reliability-cues.md` (adopted reliability lessons from vetted app review)
+12. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
+13. `docs/06-agent-roadmap.md` (phase goals and release criteria)
 
 
 Feedback-loop waterfall (required on every test app cycle):
@@ -128,6 +129,7 @@ After switching variants, run `npm run build:splunk` (or `npm run package:splunk
 - `docs/18-native-feasibility-check.md`
 - `docs/19-splunk10-native-baseline.md`
 - `docs/20-fact-evidence-standard.md`
+- `docs/21-supported-app-reliability-cues.md`
 
 - `docs/feedback/README.md`
 - `docs/feedback/index_kpi_autolab/README.md`
