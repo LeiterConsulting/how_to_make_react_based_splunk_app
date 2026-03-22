@@ -1,0 +1,29 @@
+<dashboard version="1.1" theme="light" hideEdit="true">
+  <label>Investigation Console</label>
+  <description>Search-driven example for hunt coverage and recent findings.</description>
+  <row>
+    <panel>
+      <title>Recent Matches By Hunt</title>
+      <chart>
+        <search ref="Search Investigation Console - Recent Matches By Hunt" />
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Coverage By Status</title>
+      <chart>
+        <search ref="Search Investigation Console - Coverage By Status" />
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Active Hunts</title>
+      <table>
+        <search ref="Search Investigation Console - Active Hunts" />
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>

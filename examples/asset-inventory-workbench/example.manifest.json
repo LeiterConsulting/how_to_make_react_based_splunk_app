@@ -1,0 +1,29 @@
+{
+  "id": "asset-inventory-workbench",
+  "label": "Asset Inventory Workbench",
+  "appShape": "rest-crud",
+  "uiMode": "splunk-ui-react",
+  "backend": "persistent-rest",
+  "persistence": "kvstore",
+  "summary": "REST-backed CRUD workflow for structured asset records with a custom Splunk UI operator surface.",
+  "keywords": [
+    "crud",
+    "assets",
+    "kvstore",
+    "react",
+    "operator",
+    "forms",
+    "persistence"
+  ],
+  "primaryPrompt": "prompt.md",
+  "requiredFiles": [
+    "README.md",
+    "IMPLEMENTATION_NOTES.md",
+    "prompt.md",
+    "src/App.tsx",
+    "splunk_app/asset_inventory_workbench/bin/app_access.py",
+    "splunk_app/asset_inventory_workbench/default/restmap.conf",
+    "splunk_app/asset_inventory_workbench/default/collections.conf",
+    "splunk_app/asset_inventory_workbench/default/data/ui/views/home.xml"
+  ]
+}

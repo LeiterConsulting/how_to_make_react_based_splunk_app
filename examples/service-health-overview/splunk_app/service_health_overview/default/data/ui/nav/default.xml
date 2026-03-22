@@ -1,0 +1,4 @@
+<nav search_view="search" color="#1e3a5f">
+  <view name="home" default="true" />
+  <view name="service_health" />
+</nav>

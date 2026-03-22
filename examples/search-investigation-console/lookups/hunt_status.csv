@@ -1,0 +1,4 @@
+hunt_name,status,owner,last_reviewed
+Credential misuse,active,detections-team,2026-03-20
+Suspicious script execution,monitoring,soc-ops,2026-03-19
+Rare admin login,retired,identity-team,2026-02-28

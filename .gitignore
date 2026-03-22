@@ -28,3 +28,6 @@ chargeback_app_splunk_cloud/
 *.njsproj
 *.sln
 *.sw?
+__pycache__/
+*.py[cod]
+Splunk_App_Generator_AGENTS.md

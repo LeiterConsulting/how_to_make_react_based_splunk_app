@@ -1,0 +1,28 @@
+{
+  "id": "service-health-overview",
+  "label": "Service Health Overview",
+  "appShape": "dashboard-first",
+  "uiMode": "native-splunk-views",
+  "backend": "none",
+  "persistence": "search-and-optional-lookup",
+  "summary": "Dashboard-first service monitoring reference built around native Splunk views, saved searches, and drilldowns.",
+  "keywords": [
+    "dashboard",
+    "monitoring",
+    "service-health",
+    "saved-searches",
+    "drilldowns",
+    "native-views",
+    "operations"
+  ],
+  "primaryPrompt": "prompt.md",
+  "requiredFiles": [
+    "README.md",
+    "IMPLEMENTATION_NOTES.md",
+    "prompt.md",
+    "splunk_app/service_health_overview/default/data/ui/nav/default.xml",
+    "splunk_app/service_health_overview/default/data/ui/views/home.xml",
+    "splunk_app/service_health_overview/default/data/ui/views/service_health.xml",
+    "splunk_app/service_health_overview/default/savedsearches.conf"
+  ]
+}

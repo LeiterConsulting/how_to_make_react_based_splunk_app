@@ -1,0 +1,13 @@
+<dashboard version="1.1" theme="light" hideEdit="true">
+  <label>Asset Inventory Workbench</label>
+  <description>Example generated launcher view for the asset inventory app.</description>
+  <row>
+    <panel>
+      <html>
+        <![CDATA[
+        <div id="asset-inventory-workbench-root"></div>
+        ]]>
+      </html>
+    </panel>
+  </row>
+</dashboard>

@@ -1,0 +1,17 @@
+<dashboard version="1.1" theme="light" hideEdit="true">
+  <label>Service Health Overview</label>
+  <description>Launcher page for the dashboard-first example.</description>
+  <row>
+    <panel>
+      <html>
+        <![CDATA[
+        <div style="padding: 18px; font-family: Arial, sans-serif;">
+          <h2>Service Health Overview</h2>
+          <p>Use the main dashboard for health, alert volume, and team ownership triage.</p>
+          <p><a href="service_health">Open the service health dashboard</a></p>
+        </div>
+        ]]>
+      </html>
+    </panel>
+  </row>
+</dashboard>

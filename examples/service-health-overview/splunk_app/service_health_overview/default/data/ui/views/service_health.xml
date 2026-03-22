@@ -1,0 +1,29 @@
+<dashboard version="1.1" theme="light" hideEdit="true">
+  <label>Service Health</label>
+  <description>Dashboard-first example for service health and alert triage.</description>
+  <row>
+    <panel>
+      <title>Services By State</title>
+      <chart>
+        <search ref="Service Health Overview - Services By State" />
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Alerts By Team</title>
+      <chart>
+        <search ref="Service Health Overview - Alerts By Team" />
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Services Needing Attention</title>
+      <table>
+        <search ref="Service Health Overview - Services Needing Attention" />
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>

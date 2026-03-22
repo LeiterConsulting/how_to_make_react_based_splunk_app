@@ -1,0 +1,30 @@
+{
+  "id": "search-investigation-console",
+  "label": "Search Investigation Console",
+  "appShape": "search-driven",
+  "uiMode": "native-splunk-views",
+  "backend": "none",
+  "persistence": "lookup",
+  "summary": "Search-driven investigation workflow built from dashboards, saved searches, macros, and lookup-backed hunt metadata.",
+  "keywords": [
+    "search",
+    "investigation",
+    "macros",
+    "lookup",
+    "hunts",
+    "saved-searches",
+    "security"
+  ],
+  "primaryPrompt": "prompt.md",
+  "requiredFiles": [
+    "README.md",
+    "IMPLEMENTATION_NOTES.md",
+    "prompt.md",
+    "splunk_app/search_investigation_console/default/data/ui/nav/default.xml",
+    "splunk_app/search_investigation_console/default/data/ui/views/home.xml",
+    "splunk_app/search_investigation_console/default/data/ui/views/investigation_console.xml",
+    "splunk_app/search_investigation_console/default/savedsearches.conf",
+    "splunk_app/search_investigation_console/default/macros.conf",
+    "lookups/hunt_status.csv"
+  ]
+}

@@ -1,0 +1,17 @@
+<dashboard version="1.1" theme="light" hideEdit="true">
+  <label>Search Investigation Console</label>
+  <description>Launcher page for the search-driven worked example.</description>
+  <row>
+    <panel>
+      <html>
+        <![CDATA[
+        <div style="padding: 18px; font-family: Arial, sans-serif;">
+          <h2>Search Investigation Console</h2>
+          <p>Use the main dashboard to review hunt coverage, recent matches, and status metadata.</p>
+          <p><a href="investigation_console">Open the investigation dashboard</a></p>
+        </div>
+        ]]>
+      </html>
+    </panel>
+  </row>
+</dashboard>
