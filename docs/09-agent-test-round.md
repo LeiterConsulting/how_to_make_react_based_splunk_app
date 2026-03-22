@@ -1,92 +1,65 @@
-# Agent Test Round (Execution Playbook)
+# Agent Test Round
 
-AGENT_START_HERE: `docs/09-agent-test-round.md`
+Use this playbook when you want to verify that an IDE agent can take a short requirement and turn this repo into a packaged Splunk app.
 
-Use this playbook to run the next validation cycle with an implementation agent.
+## Inputs to define before the run
 
-## Objective
+- `appId`
+- `appLabel`
+- short app summary
+- target users
+- required workflows
+- data and persistence assumptions
+- whether custom React UI is required
 
-Verify that an agent can use this bootstrap to produce a bespoke app package with minimal human intervention.
+## Recommended run sequence
 
-## Test input set (fill before run)
+1. Attach [../chat.md](../chat.md) to the IDE chat session.
+2. Give the agent the product requirement.
+3. Have the agent choose the nearest worked example or explain why the app shape is new.
+4. If the app identity changes, run `npm run template:rename -- --appId <app_id> --appLabel "<App Label>"`.
+5. Have the agent explain the chosen Splunk architecture before broad edits.
+6. Implement the UI, backend, and configuration changes.
+7. Run `npm run validate`.
+8. Run `npm run package:splunk` or `npm run release:check`.
+9. Check [10-release-checklist.md](10-release-checklist.md) for any remaining release-readiness gaps.
+10. Record the results.
 
-- `appId`:
-- `appLabel`:
-- domain summary (2-4 lines):
-- required backend capability name (optional):
-- core endpoints to implement:
-- UI variant (`minimal` or `rich`):
-- chromePolicy (`default` | `suppress-actions` | `custom`):
-- chromeTargets (if non-default):
-- deployment shape (`standalone` | `distributed` | `search-head-cluster`):
-
-## Agent prompt (copy/paste)
+## Prompt seed
 
 ```text
-You are implementing a bespoke Splunk app using this repository bootstrap.
+Build or regenerate a Splunk app in this repository.
 
-Constraints:
-1) Use appId=<APP_ID> and appLabel=<APP_LABEL> as canonical identity.
-2) Use Splunk 10 launcher-view baseline: app tile route must resolve to /app/<APP_ID>/home with a real home.xml host.
-3) Keep the 3-layer route model: React UI -> app_rest_proxy/apprestproxy -> persistent REST handler.
-4) Keep frontend fallback path strategy and include attempted paths in failures.
-5) Use existing scripts and docs in this repo, especially docs/19-splunk10-native-baseline.md, docs/18-native-feasibility-check.md, docs/12-agent-source-routing-policy.md, docs/13-sdk-api-selection-matrix.md, docs/07-agent-runbook.md, and docs/08-smoke-test.md.
-6) Follow docs/10-dashboard-chrome-controls.md for any chrome suppression/modification.
-7) Do not add unrelated features.
-8) For each major implementation decision, state selected API surface (JS SDK/Python SDK/Java SDK/Web Framework/raw REST) and why.
-9) Only claim controller-native runtime when `/custom/...` feasibility is explicitly validated.
+Before coding:
+- read chat.md, AGENTS.md, docs/01-architecture.md, and docs/09-agent-test-round.md
+- choose the nearest worked example from examples/README.md or explain why the app shape is new
+- explain the chosen architecture
+- prefer Splunk UI Framework components for custom React UI
 
-Required execution sequence:
-- Run rename: npm run template:rename -- --appId <APP_ID> --appLabel "<APP_LABEL>"
-- Run sanity: npm run sanity:appid -- --appId <APP_ID> --appLabel "<APP_LABEL>"
-- Implement requested domain changes in UI + backend.
-- Build/package: npm run package:splunk
-- Produce validation report with:
-  - package path,
-  - host shell evidence (`dashboard-wrapper` or `non-wrapper`),
-  - attempted route diagnostics for any failures,
-  - checklist status mapped to docs/08-smoke-test.md.
+During implementation:
+- keep the app installable
+- keep routes, views, and handlers registered correctly
+- add concise review comments where future developers need context
+- update docs when behavior changes
 
-Definition of done:
-- build/<APP_ID>.tar.gz is produced
-- sanity check passes
-- app tile launches to /app/<APP_ID>/home in Splunk test instance
-- one successful UI -> backend roundtrip verified
+Before finishing:
+- run npm run validate
+- run npm run package:splunk or npm run release:check
+- report grouped commit messages for the changes
 ```
 
-## Human operator steps
+## Pass criteria
 
-1. Create a clean branch for the test round.
-2. Fill test input set above.
-3. Launch agent with the prompt and filled values.
-4. Let agent complete implementation and packaging.
-5. Run smoke test from `docs/08-smoke-test.md`.
-6. Record outcomes in result template below.
+- `npm run validate` passes
+- `npm run package:splunk` succeeds
+- the package is produced in `build/`
+- the app still mounts through `home.xml`
+- at least one UI to backend roundtrip is verified
 
-## Result template
+## Failure categories
 
-- **Round ID:**
-- **Date:**
-- **Agent/model:**
-- **PASS/FAIL:**
-- **Package output:**
-- **Deployment shape:**
-- **Smoke test sections passed (1-6):**
-- **Primary failure (if any):**
-- **Root cause file(s):**
-- **Follow-up actions:**
-
-## Pass criteria for this round
-
-- `npm run sanity:appid` passes after agent changes.
-- `npm run package:splunk` succeeds.
-- Package installs and app mounts in Splunk.
-- At least one backend endpoint succeeds through expected path strategy.
-
-## Failure classification
-
-- **Identity drift:** appId mismatch across files.
-- **Packaging drift:** build/sync/tarball failures.
-- **Route exposure drift:** `restmap.conf`/`web.conf` mismatch.
-- **Contract drift:** malformed/non-normalized backend payloads.
-- **Doc drift:** implementation differs from runbook without explicit rationale.
+- identity drift
+- route registration drift
+- packaging drift
+- doc drift
+- unsupported architecture drift

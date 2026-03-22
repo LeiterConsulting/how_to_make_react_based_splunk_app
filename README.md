@@ -1,140 +1,133 @@
-# How to Make a React + Vite Splunk App (Starter Kit)
+# Splunk App Generator Starter
 
-This repository is a drop-in starter for building rich Splunk apps with:
+This repository is a reusable starter for building installable Splunk apps from a short prompt inside an IDE.
 
-- TypeScript + React + Vite frontend
-- Splunk persistent REST backend (`restmap.conf` + Python handler)
-- Optional Splunk Web custom controller proxy (for resilient browser calls)
-- Splunk packaging scripts (`tar.gz`) for app install testing
+The operating model is straightforward:
 
-It is based on proven patterns used in production-style apps and iterative Splunk app hardening cycles.
+1. Attach [chat.md](chat.md) to the chat session.
+2. Give the agent a plain-English app requirement.
+3. Let the agent rename, implement, validate, and package the app.
 
-Primary target: Splunk 10.x with deterministic launcher-view runtime (`/app/<appId>/home`) and optional controller-native surfaces (`/custom/<appId>/...`) when runtime-qualified.
+The repo is intentionally opinionated about supportable Splunk patterns:
 
-## What you get
+- React 18 + Splunk UI Framework for custom UI when native dashboards are not enough
+- Persistent REST in `bin/app_access.py` for narrow backend capabilities
+- Optional Splunk Web controller proxy for runtime variance
+- Packaging scripts that produce a real `.tar.gz` app bundle
+- Agent instructions and prompts checked into the workspace
 
-- A working end-to-end vertical slice (UI → controller proxy → splunkd REST handler)
-- Defensive frontend path fallback across Splunk environments
-- Neutral starter UI ready for domain-specific customization
-- Repeatable build/sync/package flow
+## Start here
+
+- Attach [chat.md](chat.md) to your IDE chat session.
+- Read [AGENTS.md](AGENTS.md) for repo rules and expected delivery quality.
+- Review [docs/01-architecture.md](docs/01-architecture.md) for the active architecture.
+- Use [.github/prompts/build-splunk-app.prompt.md](.github/prompts/build-splunk-app.prompt.md) if you want a ready-made implementation prompt.
 
 ## Quickstart
 
 ```bash
 npm install
-npm run build:splunk
+npm run validate
 npm run package:splunk
+```
+
+For the full release gate path in one command:
+
+```bash
+npm run release:check
 ```
 
 Install output:
 
 - `build/splunk_react_app.tar.gz`
 
-## Agent starting point
+## Generator workflow
 
-AGENT_START_HERE: `docs/09-agent-test-round.md`
-
-Use this routing order for implementation agents:
-
-1. `docs/09-agent-test-round.md` (test-round prompt + execution flow)
-2. `docs/12-agent-source-routing-policy.md` (official-doc routing and decision policy)
-3. `docs/16-native-app-page-pattern.md` (host architecture choice and migration guidance)
-4. `docs/19-splunk10-native-baseline.md` (required Splunk 10 launcher baseline + native claim rules)
-5. `docs/18-native-feasibility-check.md` (runtime classification for optional controller-native viability)
-6. `docs/20-fact-evidence-standard.md` (claim classification and evidence requirements)
-7. `docs/13-sdk-api-selection-matrix.md` (SDK/API surface selection rules)
-8. `docs/07-agent-runbook.md` (required build/package sequence)
-9. `docs/08-smoke-test.md` (validation and pass/fail criteria)
-10. `docs/10-dashboard-chrome-controls.md` (safe chrome suppression/modification policy)
-11. `docs/21-supported-app-reliability-cues.md` (adopted reliability lessons from vetted app review)
-12. `docs/22-instruction-audit-2026-02-27.md` (full instruction-set audit against Splunk docs/best practices)
-13. `docs/23-controller-native-option.md` (optional-only controller-native mode: purpose, use-cases, enablement)
-14. `docs/17-splunk-runtime-variance.md` (known runtime variance and mitigations)
-15. `docs/06-agent-roadmap.md` (phase goals and release criteria)
-
-
-Feedback-loop waterfall (required on every test app cycle):
-
-1. Build and validate using `docs/07-agent-runbook.md` + `docs/08-smoke-test.md`.
-2. Record any runtime mismatch between expected and observed behavior.
-3. Write feedback artifacts to `docs/feedback/<test_app_id>/` using numbered files.
-4. Include one issue-ready upstream feedback file in that same folder.
-5. On subsequent agent runs, read `docs/feedback/<test_app_id>/` before implementing new changes.
-
-Feedback convention reference: `docs/feedback/README.md`
-
-## Starter structure
-
-- `src/` — React UI and TS client
-- `src/llmProxySdk/splunkFetch.ts` — shared Splunk URL/fetch helpers
-- `splunk_app/splunk_react_app/bin/app_access.py` — persistent REST handler
-- `splunk_app/splunk_react_app/default/restmap.conf` — REST endpoint registrations
-- `splunk_app/splunk_react_app/default/web.conf` — Splunk Web exposure rules
-- `splunk_app/splunk_react_app/appserver/controllers/app_rest_proxy.py` — custom controller proxy
-- `scripts/splunk-sync.mjs` — copies built JS/CSS to Splunk static path
-- `scripts/splunk-package.mjs` — creates install tarball
-
-## Make this your own app in minutes
-
-The default app ID is currently `splunk_react_app` to keep this template immediately runnable.
-
-Use the rename helper to generate your own app identity:
+1. Rename the starter for your target app.
 
 ```bash
 npm run template:rename -- --appId my_new_app --appLabel "My New App"
 ```
 
-This updates common IDs/labels in frontend + Splunk config files.
+2. Tell the agent what the app should do. Reference [chat.md](chat.md) in the session.
+3. Have the agent choose the nearest worked example or declare a new app shape.
+4. Have the agent update the React UI, Splunk config, Python handlers, and docs as needed.
+5. Validate with `npm run validate`.
+6. Package with `npm run package:splunk`.
 
-## Recommended prototype flow
+## Repo layout
 
-1. Duplicate this repo/folder into your workspace.
-2. Run `template:rename` for your target app ID.
-3. Replace `src/App.tsx` UI panels with your prototype domain.
-4. Replace `app_access.py` logic with your service logic.
-5. Keep `restmap.conf`, `web.conf`, and controller proxy pattern intact.
-6. Build/package/install and iterate quickly.
+- `chat.md` - attach-this-to-chat context pack for IDE agents
+- `AGENTS.md` - repo-level behavior and acceptance rules
+- `.github/copilot-instructions.md` - always-on workspace instructions
+- `.github/instructions/generated-app-surface.instructions.md` - file-scoped rules for generated app implementation surfaces
+- `.github/prompts/build-splunk-app.prompt.md` - reusable implementation prompt
+- `.github/prompts/build-dashboard-first-app.prompt.md` - dashboard-first implementation prompt
+- `.github/prompts/build-rest-crud-app.prompt.md` - REST-backed CRUD implementation prompt
+- `.github/prompts/build-search-driven-app.prompt.md` - search-driven implementation prompt
+- `docs/01-architecture.md` - active system architecture
+- `docs/09-agent-test-round.md` - execution playbook for agent runs
+- `docs/10-release-checklist.md` - release readiness checklist for the generator starter
+- `src/` - starter React shell, reusable UI sections, and Splunk client code
+- `splunk_app/splunk_react_app/` - installable Splunk app payload
+- `tests/python/` - backend unit tests for the starter contract
+- `examples/README.md` - index of worked generated app references
+- `examples/asset-inventory-workbench/` - worked generated app reference with matching UI, backend route, and config
+- `examples/service-health-overview/` - worked dashboard-first reference using native views and saved searches
+- `examples/search-investigation-console/` - worked search-driven reference using dashboards, saved searches, macros, and a lookup
+- `scripts/` - rename, validation, sync, and packaging helpers
 
-## UI variants (fast start options)
+## Preferred UI rule
 
-- `npm run variant:rich` keeps the full demonstration UI.
-- `npm run variant:minimal` switches to a lightweight shell UI while preserving backend/controller plumbing.
+When a custom page is justified, prefer Splunk UI Framework components first. The starter shell now uses Splunk UI directly and keeps local CSS limited to layout glue around framework components.
 
-After switching variants, run `npm run build:splunk` (or `npm run package:splunk`).
+## Active docs
 
-## Key hardening lessons baked into this template
+See [docs/README.md](docs/README.md) for the current documentation index and which files are active versus legacy reference material.
 
-- Prefer explicit `restmap.conf` route matches for critical endpoints.
-- Keep a custom controller proxy available when `splunkd/__raw/services*` behavior is inconsistent.
-- Use robust session-key extraction (`session.authtoken`, header variants).
-- Separate capability checks from route registration diagnosis.
-- Keep starter UI contrast-safe (high-contrast text + visible focus states) and validate in smoke rounds.
+## Prompt examples
 
-## Documentation
+Use the base prompt or choose a more specific starting point:
 
-- `docs/01-architecture.md`
-- `docs/02-build-package-install.md`
-- `docs/03-proxy-and-routing-patterns.md`
-- `docs/04-rapid-prototype-checklist.md`
-- `docs/05-ui-variants.md`
-- `docs/06-agent-roadmap.md`
-- `docs/07-agent-runbook.md`
-- `docs/08-smoke-test.md`
-- `docs/09-agent-test-round.md`
-- `docs/10-dashboard-chrome-controls.md`
-- `docs/11-feedback-closure-roadmap.md`
-- `docs/12-agent-source-routing-policy.md`
-- `docs/13-sdk-api-selection-matrix.md`
-- `docs/14-release-notes-2026-02-26.md`
-- `docs/16-native-app-page-pattern.md`
-- `docs/17-splunk-runtime-variance.md`
-- `docs/18-native-feasibility-check.md`
-- `docs/19-splunk10-native-baseline.md`
-- `docs/20-fact-evidence-standard.md`
-- `docs/21-supported-app-reliability-cues.md`
-- `docs/22-instruction-audit-2026-02-27.md`
-- `docs/23-controller-native-option.md`
+- [.github/prompts/build-splunk-app.prompt.md](.github/prompts/build-splunk-app.prompt.md)
+- [.github/prompts/build-dashboard-first-app.prompt.md](.github/prompts/build-dashboard-first-app.prompt.md)
+- [.github/prompts/build-rest-crud-app.prompt.md](.github/prompts/build-rest-crud-app.prompt.md)
+- [.github/prompts/build-search-driven-app.prompt.md](.github/prompts/build-search-driven-app.prompt.md)
 
-- `docs/feedback/README.md`
-- `docs/feedback/index_kpi_autolab/README.md`
+## Example variants
+
+Starter variants provide example shapes that align with the current architecture:
+
+- `npm run variant:dashboard`
+- `npm run variant:rest-crud`
+- `npm run variant:minimal`
+- `npm run variant:rich`
+
+## Worked example
+
+See [examples/asset-inventory-workbench/README.md](examples/asset-inventory-workbench/README.md) for a complete reference example showing the shape of a generated REST-backed CRUD app.
+
+See [examples/service-health-overview/README.md](examples/service-health-overview/README.md) for a dashboard-first reference that stays close to native Splunk views.
+
+See [examples/search-investigation-console/README.md](examples/search-investigation-console/README.md) for a search-driven reference that uses saved searches, macros, and a lookup-backed workflow.
+
+Browse the full worked-example index in [examples/README.md](examples/README.md).
+
+Worked examples now include machine-readable manifests so validation and future agents can inspect example shape without relying only on prose.
+
+Use `npm run example:pick -- --appShape <shape>` when you want a quick manifest-based example recommendation.
+
+Add `--keywords <terms>` if you want the picker to weight specific workflow words in the example manifests.
+
+Add `--json` if you want structured picker output for another script or agent.
+
+Add `--top <n>` if you want the picker to return several high-ranked matches.
+
+## Release gate command
+
+Use `npm run release:check` to run the full repo gate path in order: validate first, then package.
+
+## Changelog
+
+Track generator evolution in [CHANGELOG.md](CHANGELOG.md).
 
