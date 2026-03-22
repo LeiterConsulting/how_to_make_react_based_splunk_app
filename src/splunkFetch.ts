@@ -134,11 +134,9 @@ export function getSplunkServicesBasePath() {
     // ignore
   }
 
-  // Prefer locale-derived absolute path.
   const locale = tryGetLocalePrefix()
   if (locale) return `${locale}/splunkd/__raw/services`
 
-  // Fallback: attempt relative to document.baseURI.
   try {
     const u = new URL('splunkd/__raw/services', document.baseURI)
     return u.pathname.replace(/\/+$/, '')

@@ -18,7 +18,7 @@ const args = parseArgs(process.argv.slice(2))
 const variant = (args.variant || '').trim()
 
 if (!variant) {
-  throw new Error('Missing --variant (expected minimal-ui or rich-ui)')
+  throw new Error('Missing --variant (expected dashboard-first, minimal-ui, rest-crud, or rich-ui)')
 }
 
 const root = process.cwd()

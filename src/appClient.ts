@@ -1,4 +1,4 @@
-import { getSplunkCustomControllerBasePath, getSplunkServicesBasePath, getSplunkServicesNSBasePath, splunkFetchJSON } from './llmProxySdk/splunkFetch'
+import { getSplunkCustomControllerBasePath, getSplunkServicesBasePath, getSplunkServicesNSBasePath, splunkFetchJSON } from './splunkFetch'
 import type { StarterBootstrapResult, StarterDiagnosticsResult, StarterPingResult } from './components'
 
 const APP = 'splunk_react_app'

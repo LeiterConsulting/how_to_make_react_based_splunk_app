@@ -76,7 +76,7 @@ Use this mapping when reviewing older notes, logs, or past agent output.
 
 **Deliverables**
 
-- Keep all path candidates in one helper (`src/llmProxySdk/splunkFetch.ts` or equivalent).
+- Keep all path candidates in one helper (`src/splunkFetch.ts` or equivalent).
 - Include attempted URL candidates in thrown errors.
 - Add optional backend diagnostics endpoint for route/path introspection.
 

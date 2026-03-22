@@ -6,7 +6,7 @@ Use this matrix to select the correct implementation surface before coding.
 
 | Problem boundary | Preferred surface | Why | Typical location in this repo |
 |---|---|---|---|
-| Browser-to-Splunk app calls in dashboard context | Splunk Web path helpers + app REST routes | Most compatible with Splunk Web session/csrf behavior | `src/llmProxySdk/splunkFetch.ts`, `src/appClient.ts` |
+| Browser-to-Splunk app calls in dashboard context | Splunk Web path helpers + app REST routes | Most compatible with Splunk Web session/csrf behavior | `src/splunkFetch.ts`, `src/appClient.ts` |
 | Splunk persistent backend logic | Python persistent REST handler | Native fit for `restmap.conf` + Splunk runtime | `splunk_app/<appId>/bin/*.py` |
 | Splunk Web controller compatibility proxy | Splunk Web Framework controller patterns | Handles browser path compatibility in some deployments | `splunk_app/<appId>/appserver/controllers/*.py` |
 | Cross-service integration from backend | Python SDK or `splunk.rest.simpleRequest` | Strongest fit to existing bootstrap runtime path | `splunk_app/<appId>/bin/*.py` |

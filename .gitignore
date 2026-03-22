@@ -30,4 +30,3 @@ chargeback_app_splunk_cloud/
 *.sw?
 __pycache__/
 *.py[cod]
-Splunk_App_Generator_AGENTS.md
