@@ -39,61 +39,53 @@ function getLineNumber(content, index) {
 
 function main() {
   const root = path.resolve(process.cwd())
-  const docsDir = path.join(root, 'docs')
-  const files = [path.join(root, 'README.md'), ...listMarkdownFiles(docsDir)]
-    .filter((filePath) => {
-      const rel = relative(root, filePath)
-      return !rel.startsWith('docs/feedback/')
-    })
-
   const checks = []
   const errors = []
-
-  const forbiddenPatterns = [
-    {
-      regex: /launcher[-\s](?:native[-\s]view|view)[^\n]{0,140}(?:must|required|requirement|enforce|enforced)[^\n]{0,140}\/custom\//gi,
-      reason: 'Launcher-view baseline must not require /custom routes.',
-    },
-    {
-      regex: /controller[-\s]native[^\n]{0,120}(?:is required(?:\s+baseline)?|required by default|must be default|must be required baseline)/gi,
-      reason: 'Controller-native wording must remain optional/runtime-qualified.',
-    },
-    {
-      regex: /launcher-bridge/gi,
-      reason: 'Deprecated host-mode term detected; use launcher-native-view.',
-    },
-  ]
-
-  for (const filePath of files) {
-    const content = readText(filePath)
-    const rel = relative(root, filePath)
-
-    for (const { regex, reason } of forbiddenPatterns) {
-      checks.push(`No forbidden instruction pattern (${reason})`)
-      regex.lastIndex = 0
-      const match = regex.exec(content)
-      if (match) {
-        const line = getLineNumber(content, match.index)
-        errors.push(`${rel}:${line} -> ${reason}`)
-      }
-    }
-  }
-
   const requiredFileChecks = [
     {
-      filePath: path.join(root, 'docs', '19-splunk10-native-baseline.md'),
-      regex: /launcher-native-view/i,
-      reason: 'Baseline doc must explicitly name launcher-native-view as deterministic host mode.',
+      filePath: path.join(root, 'chat.md'),
+      regex: /Add this file to your IDE chat/i,
+      reason: 'chat.md must explicitly tell users to attach it to the chat session.',
     },
     {
-      filePath: path.join(root, 'docs', '18-native-feasibility-check.md'),
-      regex: /custom-controller available|custom-controller unavailable/i,
-      reason: 'Feasibility doc must preserve explicit controller classification outputs.',
+      filePath: path.join(root, 'AGENTS.md'),
+      regex: /Splunk app generator starter/i,
+      reason: 'AGENTS.md must declare the repo mission clearly.',
     },
     {
-      filePath: path.join(root, 'docs', '08-smoke-test.md'),
-      regex: /native-page objective/i,
-      reason: 'Smoke test must preserve native-page objective gate wording.',
+      filePath: path.join(root, '.github', 'copilot-instructions.md'),
+      regex: /chat\.md/i,
+      reason: 'Workspace instructions must route agents to chat.md.',
+    },
+    {
+      filePath: path.join(root, '.github', 'instructions', 'generated-app-surface.instructions.md'),
+      regex: /generated app implementation surfaces/i,
+      reason: 'Generated app instruction file must define the app-specific editing surface.',
+    },
+    {
+      filePath: path.join(root, '.github', 'prompts', 'build-splunk-app.prompt.md'),
+      regex: /template:rename/i,
+      reason: 'Prompt file must include the rename flow.',
+    },
+    {
+      filePath: path.join(root, '.github', 'prompts', 'build-dashboard-first-app.prompt.md'),
+      regex: /dashboard-first/i,
+      reason: 'Dashboard-first prompt preset must declare its app shape.',
+    },
+    {
+      filePath: path.join(root, '.github', 'prompts', 'build-rest-crud-app.prompt.md'),
+      regex: /CRUD/i,
+      reason: 'REST CRUD prompt preset must declare its app shape.',
+    },
+    {
+      filePath: path.join(root, '.github', 'prompts', 'build-search-driven-app.prompt.md'),
+      regex: /search-driven/i,
+      reason: 'Search-driven prompt preset must declare its app shape.',
+    },
+    {
+      filePath: path.join(root, 'README.md'),
+      regex: /chat\.md/i,
+      reason: 'README must direct users to the chat context pack.',
     },
   ]
 
@@ -107,6 +99,12 @@ function main() {
     if (!regex.test(content)) {
       errors.push(`${relative(root, filePath)}: missing required pattern (${reason})`)
     }
+  }
+
+  const archivedDocs = listMarkdownFiles(path.join(root, 'docs', 'archive'))
+  checks.push('Archived docs folder is excluded from active instruction checks')
+  if (archivedDocs.length === 0) {
+    errors.push('docs/archive: expected archived documentation files to remain available')
   }
 
   if (errors.length > 0) {

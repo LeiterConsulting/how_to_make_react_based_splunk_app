@@ -304,6 +304,7 @@ function main() {
   const checkedDocs = markdownFiles.filter((filePath) => {
     const rel = relative(root, filePath)
     if (rel.startsWith('docs/feedback/')) return false
+    if (rel.startsWith('docs/archive/')) return false
     return true
   })
 
