@@ -1,64 +1,7 @@
 import { getSplunkCustomControllerBasePath, getSplunkServicesBasePath, getSplunkServicesNSBasePath, splunkFetchJSON } from './llmProxySdk/splunkFetch'
+import type { StarterBootstrapResult, StarterDiagnosticsResult, StarterPingResult } from './components'
 
 const APP = 'splunk_react_app'
-
-type Endpoint = {
-  id: string
-  host: string
-  port: number
-  description?: string
-  enabled: boolean
-  tags?: string[]
-}
-
-type ProbeResult = {
-  ok: boolean
-  detail: string
-  ms?: number
-}
-
-type EndpointProbe = {
-  endpoint_id: string
-  host: string
-  port: number
-  probes: {
-    dns: ProbeResult
-    tcp: ProbeResult
-    ssh_banner: ProbeResult
-  }
-}
-
-type CapabilityResult = {
-  ok: true
-  user: string
-  required_capability: string
-  has_access: boolean
-  capabilities: string[]
-}
-
-type EndpointsResult = {
-  ok: true
-  endpoints: Endpoint[]
-  probes?: EndpointProbe[]
-}
-
-type ConnectResult = {
-  ok: boolean
-  can_connect: boolean
-  reason?: string
-  connection?: {
-    type: string
-    host: string
-    port: number
-    user: string
-    ssh_uri: string
-    launch?: {
-      kind: string
-      url?: string
-      note?: string
-    }
-  }
-}
 
 function appApiPath(path = '') {
   return `${getSplunkServicesNSBasePath(APP)}/app_api${path}`
@@ -96,6 +39,7 @@ async function fetchWithPathFallback<T>(pathSuffix: string, options: { method?: 
     appApiPathCustomController(pathSuffix),
   ]
 
+  // REVIEW: Preserve the attempted path list so Splunk runtime mismatches are actionable during smoke tests.
   let lastError: unknown = null
   const attempted: string[] = []
   for (const path of candidates) {
@@ -121,42 +65,22 @@ async function fetchWithPathFallback<T>(pathSuffix: string, options: { method?: 
   throw new Error(`All app endpoint path candidates failed\nAttempted paths:\n${attemptedText}`)
 }
 
-export async function getCapability(): Promise<CapabilityResult> {
-  const res = await fetchWithPathFallback<CapabilityResult>('/capability', { query: { output_mode: 'json' } })
-  if (!res) throw new Error('Empty capability response')
+export async function pingStarter(): Promise<StarterPingResult> {
+  const res = await fetchWithPathFallback<StarterPingResult>('/ping', { query: { output_mode: 'json' } })
+  if (!res) throw new Error('Empty ping response')
   return res
 }
 
-export async function getKnownEndpoints(withProbe = false): Promise<EndpointsResult> {
-  const res = await fetchWithPathFallback<EndpointsResult>('/endpoints', {
-    query: { output_mode: 'json', probe: withProbe ? 'true' : 'false' },
-  })
-  if (!res) throw new Error('Empty endpoints response')
+export async function getStarterBootstrap(): Promise<StarterBootstrapResult> {
+  const res = await fetchWithPathFallback<StarterBootstrapResult>('/bootstrap', { query: { output_mode: 'json' } })
+  if (!res) throw new Error('Empty bootstrap response')
   return res
 }
 
-export async function probeHost(host: string, port: number): Promise<EndpointProbe> {
-  const res = await fetchWithPathFallback<EndpointProbe>('/probe', {
-    method: 'POST',
-    form: {
-      host,
-      port: String(port),
-    },
-  })
-  if (!res) throw new Error('Empty probe response')
+export async function getStarterDiagnostics(): Promise<StarterDiagnosticsResult> {
+  const res = await fetchWithPathFallback<StarterDiagnosticsResult>('/diagnostics', { query: { output_mode: 'json' } })
+  if (!res) throw new Error('Empty diagnostics response')
   return res
 }
 
-export async function connectHost(host: string, port: number): Promise<ConnectResult> {
-  const res = await fetchWithPathFallback<ConnectResult>('/connect', {
-    method: 'POST',
-    form: {
-      host,
-      port: String(port),
-    },
-  })
-  if (!res) throw new Error('Empty connect response')
-  return res
-}
-
-export type { Endpoint, EndpointProbe, ProbeResult, CapabilityResult, ConnectResult }
+export type { StarterPingResult, StarterBootstrapResult, StarterDiagnosticsResult }

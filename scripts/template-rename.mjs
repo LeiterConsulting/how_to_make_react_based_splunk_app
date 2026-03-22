@@ -55,6 +55,14 @@ function setViewLabel(filePath, appLabel) {
   if (updated !== content) write(filePath, updated)
 }
 
+function setManifestTitle(filePath, appLabel) {
+  if (!fs.existsSync(filePath)) return
+  const manifest = JSON.parse(read(filePath))
+  manifest.info = manifest.info || {}
+  manifest.info.title = appLabel
+  write(filePath, `${JSON.stringify(manifest, null, 2)}\n`)
+}
+
 function listAppFolders(splunkAppRoot) {
   if (!fs.existsSync(splunkAppRoot)) return []
   return fs
@@ -160,13 +168,23 @@ function main() {
   const homeViewFile = path.join(activeAppDir, 'default', 'data', 'ui', 'views', 'home.xml')
 
   const filesToPatch = [
+    path.join(root, 'AGENTS.md'),
     path.join(root, 'README.md'),
+    path.join(root, 'chat.md'),
+    path.join(root, '.github', 'copilot-instructions.md'),
+    path.join(root, '.github', 'instructions', 'generated-app-surface.instructions.md'),
+    path.join(root, '.github', 'prompts', 'build-splunk-app.prompt.md'),
+    path.join(root, '.github', 'prompts', 'build-dashboard-first-app.prompt.md'),
+    path.join(root, '.github', 'prompts', 'build-rest-crud-app.prompt.md'),
+    path.join(root, '.github', 'prompts', 'build-search-driven-app.prompt.md'),
     path.join(root, 'scripts', 'splunk-sync.mjs'),
     path.join(root, 'scripts', 'splunk-package.mjs'),
+    path.join(root, 'scripts', 'sanity-check-instructions.mjs'),
     path.join(root, 'vite.splunk.config.ts'),
     path.join(root, 'src', 'appClient.ts'),
     path.join(root, 'src', 'splunk', 'splunkMain.tsx'),
     path.join(activeAppDir, 'bin', 'app_access.py'),
+    path.join(activeAppDir, 'bin', 'app_access_payloads.py'),
     path.join(activeAppDir, 'appserver', 'controllers', 'app_rest_proxy.py'),
     path.join(activeAppDir, 'appserver', 'controllers', 'apprestproxy.py'),
     path.join(activeAppDir, 'appserver', 'controllers', 'app_page.py'),
@@ -189,6 +207,7 @@ function main() {
 
   setAppConfLabel(path.join(activeAppDir, 'default', 'app.conf'), appLabel)
   setViewLabel(homeViewFile, appLabel)
+  setManifestTitle(path.join(activeAppDir, 'app.manifest'), appLabel)
 
   ensureAppLogo(activeAppDir)
 

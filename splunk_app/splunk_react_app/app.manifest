@@ -1,7 +1,7 @@
 {
   "schemaVersion": "2.0.0",
   "info": {
-    "title": "Splunk React App",
+    "title": "Splunk App Generator Starter",
     "id": {
       "group": null,
       "name": "splunk_react_app",
@@ -15,7 +15,7 @@
       }
     ],
     "releaseDate": null,
-    "description": "React + Vite starter app with launcher-native baseline, persistent REST, and optional controller-native route.",
+    "description": "Agent-first Splunk app generator starter with React, persistent REST, and packaging automation.",
     "classification": {
       "intendedAudience": null,
       "categories": [],

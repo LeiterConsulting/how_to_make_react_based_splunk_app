@@ -4,6 +4,7 @@ import path from 'node:path'
 const projectRoot = path.resolve(process.cwd())
 const distDir = path.join(projectRoot, 'dist-splunk')
 
+// REVIEW: template-rename rewrites this constant for generated apps.
 const appFolderName = 'splunk_react_app'
 const splunkAppRoot = path.join(projectRoot, 'splunk_app', appFolderName)
 const staticDir = path.join(splunkAppRoot, 'appserver', 'static')
